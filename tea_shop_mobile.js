@@ -936,6 +936,11 @@ function updateTeaDisplay() {
                 margin-right: 5px;
                 font-size: 16px;
             }
+            .tea-item {
+                cursor: pointer;
+                user-select: none;
+                position: relative;
+            }
         `;
         document.head.appendChild(style);
         
@@ -949,6 +954,33 @@ function updateTeaDisplay() {
                 const teaItem = document.createElement('div');
                 teaItem.className = 'tea-item';
                 teaItem.setAttribute('data-tea-id', tea.id);
+                
+                // 添加双击事件监听器，双击倒掉茶饮
+                let clickCount = 0;
+                let clickTimer = null;
+                
+                teaItem.addEventListener('click', (e) => {
+                    // 如果点击的是按钮，不处理双击
+                    if (e.target.classList.contains('tea-action-btn')) {
+                        return;
+                    }
+                    
+                    clickCount++;
+                    
+                    if (clickCount === 1) {
+                        clickTimer = setTimeout(() => {
+                            clickCount = 0;
+                        }, 300); // 300毫秒内的连续点击视为双击
+                    } else if (clickCount === 2) {
+                        clearTimeout(clickTimer);
+                        clickCount = 0;
+                        
+                        // 双击确认倒掉茶饮
+                        if (confirm(`确定要倒掉这杯${tea.recipe || tea.name}吗？`)) {
+                            discardTea(tea.id);
+                        }
+                    }
+                });
                 
                 const teaName = document.createElement('div');
                 teaName.className = 'tea-name';
@@ -1116,15 +1148,17 @@ function serveTea(teaId) {
         gameData.collectedCards[customer.name].lastVisit = new Date().toLocaleDateString();
         serveMessage += `\n获得了${customer.name}的收藏卡！`;
         
-        // 检查是否解锁新配方
+        // 检查是否解锁新配方（仅在非测试模式下）
         const customerName = customer.name;
         customer.served = true;
         
         // 先重置顾客，避免重复检查
         setTimeout(() => {
             resetCustomer();
-            // 检查解锁条件
-            checkRecipeUnlock(customerName);
+            // 检查解锁条件，但在测试模式下不检查
+            if (!customer.isTestCustomer) {
+                checkRecipeUnlock(customerName);
+            }
         }, 2000);
     } else {
         // 重置顾客
@@ -1239,12 +1273,51 @@ function updateProcessingBoardDisplay() {
         if (gameData.processingBoard.state === 'idle') {
             processingState.textContent = '点击加工材料';
         } else if (gameData.processingBoard.state === 'processing') {
-            const remainingTime = Math.ceil((gameData.processingBoard.startTime + gameData.processingBoard.duration - Date.now()) / 1000);
+            const remainingTime = Math.max(0, Math.ceil((gameData.processingBoard.startTime + gameData.processingBoard.duration - Date.now()) / 1000));
             processingState.textContent = `正在加工 ${gameData.processingBoard.recipe} (${remainingTime}秒)`;
+            
+            // 如果剩余时间小于等于0，自动完成加工
+            if (remainingTime <= 0) {
+                gameData.processingBoard.state = 'done';
+                addMessage(`${gameData.processingBoard.recipe}加工完成了。`);
+                processingState.textContent = `${gameData.processingBoard.recipe} 加工完成，点击收取`;
+            }
         } else if (gameData.processingBoard.state === 'done') {
             processingState.textContent = `${gameData.processingBoard.recipe} 加工完成，点击收取`;
         }
     }
+    
+    // 更新案板配方按钮，显示原料数量
+    const recipeButtons = document.querySelectorAll('.recipe-btn');
+    recipeButtons.forEach(btn => {
+        const recipe = btn.getAttribute('data-recipe');
+        const recipeInfo = gameData.processingRecipes[recipe];
+        
+        if (recipeInfo && recipeInfo.ingredients && recipeInfo.ingredients.length > 0) {
+            // 获取加工这个小料需要的原料
+            const ingredient = recipeInfo.ingredients[0]; // 通常每个配方只需要一种原料
+            const ingredientCount = gameData.inventory[ingredient] || 0;
+            const currentToppingCount = gameData.toppings[recipe] || 0;
+            
+            // 显示格式：原料名(数量)
+            btn.textContent = `${ingredient}(${ingredientCount})`;
+            
+            // 添加小工具提示，鼠标悬停时显示更多信息
+            btn.title = `用${ingredient}制作${recipe}。原料:${ingredientCount}个，已有小料:${currentToppingCount}份`;
+            
+            // 根据原料数量显示不同的样式
+            // 先清除所有状态类
+            btn.classList.remove('no-material', 'low-material', 'enough-material');
+            
+            if (ingredientCount === 0) {
+                btn.classList.add('no-material');
+            } else if (ingredientCount <= 2) {
+                btn.classList.add('low-material');
+            } else {
+                btn.classList.add('enough-material');
+            }
+        }
+    });
 }
 
 // 更新篮子显示
@@ -1921,16 +1994,6 @@ function updateTimers() {
     
     // 更新农田计时器显示
     updatePlotTimers();
-    
-    // 检查加工完成
-    if (gameData.processingBoard.state === 'processing') {
-        const currentTime = Date.now();
-        if (currentTime - gameData.processingBoard.startTime >= gameData.processingBoard.duration) {
-            gameData.processingBoard.state = 'done';
-            addMessage(`${gameData.processingBoard.recipe}加工完成了。`);
-            updateProcessingBoardDisplay();
-        }
-    }
 }
 
 // 专门用于更新农田倒计时的函数
@@ -2156,11 +2219,134 @@ function initGame() {
         gameData.collectedCards = {};
     }
     
+    // 初始化暂停按钮
+    initPauseButton();
+    
     initEventListeners();
     setupTabSystem();
     setupSwiper();
     updateAllDisplays();
-    gameLoop();
+    
+    // 启动游戏循环和定时器
+    setInterval(function() {
+        if (!isPaused) gameLoop();
+    }, 1000);
+    
+    setInterval(function() {
+        if (!isPaused) updateTimers();
+    }, 1000);
+    
+    debug('游戏初始化完成');
+}
+
+// 游戏循环
+function gameLoop() {
+    // 更新天气和季节
+    updateWeatherAndSeason();
+    
+    // 更新植物生长
+    updateGrowth();
+    
+    // 更新炉灶
+    updateStove();
+    
+    // 更新顾客
+    updateCustomer();
+    
+    // 更新茶温度
+    updateTeaTemperatures();
+    
+    // 检查新配方解锁
+    updateRecipeUnlockStatus();
+}
+
+// 游戏暂停状态
+let isPaused = false;
+
+// 初始化暂停按钮
+function initPauseButton() {
+    const pauseBtn = document.getElementById('pause-btn');
+    const pauseOverlay = document.getElementById('pause-overlay');
+    const resumeBtn = document.getElementById('resume-btn');
+    
+    if (!pauseBtn || !pauseOverlay || !resumeBtn) {
+        console.error('暂停功能缺少必要的DOM元素');
+        return;
+    }
+    
+    // 点击暂停按钮
+    pauseBtn.addEventListener('click', function() {
+        togglePause();
+        // 如果是从菜单中点击的，关闭菜单
+        const menuPanel = document.getElementById('menu-panel');
+        if (menuPanel && menuPanel.style.display === 'block') {
+            menuPanel.style.display = 'none';
+        }
+    });
+    
+    // 点击继续按钮
+    resumeBtn.addEventListener('click', function() {
+        togglePause();
+    });
+    
+    // 按下空格键也可以暂停/继续
+    document.addEventListener('keydown', function(e) {
+        if (e.code === 'Space' || e.keyCode === 32) {
+            togglePause();
+            e.preventDefault(); // 防止页面滚动
+        }
+    });
+}
+
+// 切换暂停状态
+function togglePause() {
+    isPaused = !isPaused;
+    
+    const pauseBtn = document.getElementById('pause-btn');
+    const pauseOverlay = document.getElementById('pause-overlay');
+    
+    if (isPaused) {
+        pauseBtn.classList.add('active');
+        pauseOverlay.classList.add('active');
+        addMessage('游戏已暂停');
+    } else {
+        pauseBtn.classList.remove('active');
+        pauseOverlay.classList.remove('active');
+        addMessage('游戏已继续');
+    }
+}
+
+// 修改游戏循环，考虑暂停状态
+function gameLoop() {
+    if (isPaused) return; // 如果暂停，停止游戏逻辑更新
+    
+    // 更新天气和季节
+    updateWeatherAndSeason();
+    
+    // 更新植物生长
+    updateGrowth();
+    
+    // 更新炉灶
+    updateStove();
+    
+    // 更新顾客
+    updateCustomer();
+    
+    // 更新茶温度
+    updateTeaTemperatures();
+    
+    // 检查新配方解锁
+    updateRecipeUnlockStatus();
+}
+
+// 修改定时器更新，考虑暂停状态
+function updateTimers() {
+    if (isPaused) return; // 如果暂停，停止更新定时器
+    
+    updatePlotTimers();
+    updateTeaDisplay();
+    updateStoveDisplay();
+    updateProcessingBoardDisplay();
 }
 
 // 修改showCollectionCards函数开头，添加调试信息
@@ -2547,10 +2733,10 @@ function handleProcessingBoardClick() {
         // 红糖和薄荷叶直接加到小料区
         if (recipe === '红糖' || recipe === '薄荷叶') {
             gameData.toppings[recipe] = (gameData.toppings[recipe] || 0) + 1;
-            addMessage(`你收取了一份${recipe}，已添加到小料区。`);
+            addMessage(`你收取了一份${recipe}，已添加到小料区。当前${recipe}数量：${gameData.toppings[recipe]}份`);
         } else {
             gameData.toppings[recipe] = (gameData.toppings[recipe] || 0) + 1;
-            addMessage(`你收取了一份${recipe}，已添加到小料区。`);
+            addMessage(`你收取了一份${recipe}，已添加到小料区。当前${recipe}数量：${gameData.toppings[recipe]}份`);
         }
         updateProcessingBoardDisplay();
         updateToppingsDisplay();
@@ -2573,14 +2759,22 @@ function processRecipe(recipeName) {
     
     // 检查材料是否足够
     const missingIngredients = [];
+    const availableIngredients = [];
     for (const ingredient of recipeInfo.ingredients) {
-        if (!gameData.inventory[ingredient] || gameData.inventory[ingredient] <= 0) {
-            missingIngredients.push(ingredient);
+        const currentCount = gameData.inventory[ingredient] || 0;
+        if (currentCount <= 0) {
+            missingIngredients.push(`${ingredient}(当前:${currentCount})`);
+        } else {
+            availableIngredients.push(`${ingredient}(当前:${currentCount})`);
         }
     }
     
     if (missingIngredients.length > 0) {
-        addMessage(`加工${recipeName}需要${missingIngredients.join('和')}，但你没有足够的材料。`, true);
+        let message = `加工${recipeName}失败！缺少材料：${missingIngredients.join('、')}`;
+        if (availableIngredients.length > 0) {
+            message += `。已有材料：${availableIngredients.join('、')}`;
+        }
+        addMessage(message, true);
         return;
     }
     
@@ -2599,6 +2793,7 @@ function processRecipe(recipeName) {
     
     updateProcessingBoardDisplay();
     updateBasketDisplay();
+    updateToppingsDisplay(); // 添加这行，确保小料显示也更新
 }
 
 // 显示添加小料面板
@@ -3106,8 +3301,7 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(styleElement);
     
-    // 启动主游戏循环
-    gameLoop();
+    // 游戏循环由initGame函数启动，这里不再重复启动
 }); 
 
 // 更新DOM元素引用
@@ -3377,8 +3571,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateDOMReferences(); // 更新DOM元素引用
     initStoveRecipe();  // 初始化炉灶配方选择功能
     
-    // 启动主游戏循环
-    gameLoop();
+    // 游戏循环由initGame函数启动，这里不再重复启动
 }); 
 
 // 修复顾客功能
@@ -5005,11 +5198,13 @@ function checkRecipeUnlock(customerName) {
         return false;
     }
     
-    // 增加来访次数
-    if (!gameData.customerVisits[customerName]) {
-        gameData.customerVisits[customerName] = 1;
-    } else {
-        gameData.customerVisits[customerName]++;
+    // 增加来访次数（如果是测试模式，不增加次数）
+    if (!gameData.testMode) {
+        if (!gameData.customerVisits[customerName]) {
+            gameData.customerVisits[customerName] = 1;
+        } else {
+            gameData.customerVisits[customerName]++;
+        }
     }
     
     const visitCount = gameData.customerVisits[customerName];
@@ -5050,14 +5245,28 @@ function checkRecipeUnlock(customerName) {
     // 如果有配方解锁
     if (unlockedRecipe) {
         debug(`解锁配方: ${unlockedRecipe}`);
-        gameData.unlockedRecipes.push(unlockedRecipe);
         
-        // 显示解锁故事
-        setTimeout(() => {
-            showRecipeUnlockStory(unlockedRecipe);
-        }, 2000); // 延迟显示，让玩家先看到顾客离开的消息
-        
-        return true;
+        // 防止重复添加配方
+        if (!gameData.unlockedRecipes.includes(unlockedRecipe)) {
+            gameData.unlockedRecipes.push(unlockedRecipe);
+            
+            // 记录已显示过的故事，避免重复显示
+            if (!gameData.shownRecipeStories) {
+                gameData.shownRecipeStories = [];
+            }
+            
+            // 只有当故事没有显示过时才显示
+            if (!gameData.shownRecipeStories.includes(unlockedRecipe)) {
+                gameData.shownRecipeStories.push(unlockedRecipe);
+                
+                // 显示解锁故事
+                setTimeout(() => {
+                    showRecipeUnlockStory(unlockedRecipe);
+                }, 2000); // 延迟显示，让玩家先看到顾客离开的消息
+            }
+            
+            return true;
+        }
     }
     
     return false;
@@ -5272,7 +5481,432 @@ function showRecipeUnlockStory(recipe) {
     document.head.appendChild(style);
     
     // 播放解锁音效（如果需要）
-    const unlockSound = new Audio('data:audio/wav;base64,UklGRiQDAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQADAAD///wRDhsF/QH8EhwO+Qj2CRMSDw75CfsNEg8TDw39A/0P/hIQEAn8+gsQEhUP/wX8/xD+Cw8UEQv/+Or3CBsSEAv/9ev1ChkWEgv88evzChwZFQ4B+u3xCR4cGBIE/O/vCB4eGhQH/e/uBx8gHBYJ/u/tBSAhHhcL/+/sBCEjIBkM/+/rAyIkIhsOAO7rAiMmJB0PAO7qASMnJh8QAPD9/RgkJyAQAPL9/RglKCEQAfP9/RcmKSMRAff9/BcnKiQSAff9/BYoKyQSAvj9/BYpLCUSAvr9+xUqLSYSAvn9+xUrLicTA/n9+xQsMCgTBPr9+xMtMSkUBPr9+xMuMioUBfv9+xIvMysUBfv9+xIwNCsVBvz9+xExNSwVBvz9/BEyNi0WCPz9/BAzNy4WCfz9/BAzOC8XCv39/A81OS8XC/39/A82OjAYDf39/A83OzEYDf39/A84PDIZDv7+/A45PTMZDv7+/A45PjMaD/7+/A46PzQaEP/+/A47QDUbEf/+/A48QTYcEv/+/A49QjcdEwD+/A4+QzgdEwH+/A4/RDkeEwL+/A5ARTofFAP+/A5BRjsfFQT+/A5CRzwgFgP+/A9DRz0hFgL9/A9FSD0iFwH9/BBGSj0jFwL9/BBHSz4kFwP9/BBISz8lFgT9/BBJTEAWFAT9/BBKTkEXEwP9/RFLTkIXEwL9/RFMUEMYEgL8/RFNUUQYEAL7/RJOUEUYEAL7/RJOUEUYEAL7/RJPUkYZEAH7/RJQUkcZEAH7/RJRUUgZEAL7/RJSU0kZDwL6/RNUVEYZDAL5/BFSVUUYCAH5/RFSVUMXCQH6/RFRVD8WCwH7/BFPUz0WCwL7/BJNUT0WDAP7/BJOUj4XEAP8/BJNUj8XEQT8/BJMUkAZEgX9/BJLUUEZEQL8/BpNUEAfAwP5/hdMTkEeBAP6/hdLTEEeBAP6/hhKS0AeBAP6/hhJSUAeBAP6/hhISEAeBAP6/hhHRkAeBAP6/hhHRkAeBAP6/hhGRUEeBAP6/hhFRD8eBAP6/hhEQz4eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBATs');
+    const unlockSound = new Audio('data:audio/wav;base64,UklGRiQDAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQADAAD///wRDhsF/QH8EhwO+Qj2CRMSDw75CfsNEg8TDw39A/0P/hIQEAn8+gsQEhUP/wX8/xD+Cw8UEQv/+Or3CBsSEAv/9ev1ChkWEgv88evzChwZFQ4B+u3xCR4cGBIE/O/vCB4eGhQH/e/uBx8gHBYJ/u/tBSAhHhcL/+/sBCEjIBkM/+/rAyIkIhsOAO7rAiMmJB0PAO7qASMnJh8QAPD9/RgkJyAQAPL9/RglKCEQAfP9/RcmKSMRAff9/BcnKiQSAff9/BYoKyQSAvj9+xUqLSYSAvn9+xUrLicTA/n9+xQsMCgTBPr9+xMtMSkUBPr9+xMuMioUBfv9+xIvMysUBfv9+xIwNCsVBvz9+xExNSwVBvz9/BEyNi0WCPz9/BAzNy4WCfz9/BAzOC8XCv39/A81OS8XC/39/A82OjAYDf39/A83OzEYDf39/A84PDIZDv7+/A45PTMZDv7+/A45PjMaD/7+/A46PzQaEP/+/A47QDUbEf/+/A48QTYcEv/+/A49QjcdEwD+/A4+QzgdEwH+/A4/RDkeEwL+/A5ARTofFAP+/A5BRjsfFQT+/A5CRzwgFgP+/A9DRz0hFgL9/A9FSD0iFwH9/BBGSj0jFwL9/BBHSz4kFwP9/BBISz8lFgT9/BBJTEAWFAT9/BBKTkEXEwP9/RFLTkIXEwL9/RFMUEMYEgL8/RFNUUQYEAL7/RJOUEUYEAL7/RJOUEUYEAL7/RJPUkYZEAH7/RJQUkcZEAH7/RJRUUgZEAL7/RJSU0kZDwL6/RNUVEYZDAL5/BFSVUUYCAH5/RFSVUMXCQH6/RFRVD8WCwH7/BFPUz0WCwL7/BJNUT0WDAP7/BJOUj4XEAP8/BJNUj8XEQT8/BJMUkAZEgX9/BJLUUEZEQL8/BpNUEAfAwP5/hdMTkEeBAP6/hdLTEEeBAP6/hhKS0AeBAP6/hhJSUAeBAP6/hhISEAeBAP6/hhHRkAeBAP6/hhHRkAeBAP6/hhGRUEeBAP6/hhFRD8eBAP6/hhEQz4eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBAT6/hhDQj0eBATs');
     unlockSound.volume = 0.3;
     unlockSound.play().catch(e => debug('无法播放音效', e));
+}
+
+// 测试模式功能
+// 备份原始游戏数据
+let originalGameData = null;
+let isTestMode = false;
+let testIndicator = null;
+
+// 初始化测试模式
+function initTestMode() {
+    console.log('初始化测试模式...');
+    
+    // 为测试模式按钮添加事件监听器
+    const testModeBtn = document.getElementById('test-mode-button');
+    const testModePanel = document.getElementById('test-mode-panel');
+    const testModeHeader = testModePanel ? testModePanel.querySelector('.test-header') : null;
+    const closeTestModeBtn = document.getElementById('close-test-mode');
+    const exitTestModeBtn = document.getElementById('exit-test-mode');
+    const spawnCustomerTestBtn = document.getElementById('spawn-customer-test');
+    const addTeaTestBtn = document.getElementById('add-tea-test');
+    const testStatusText = document.getElementById('test-status-text');
+    
+    // 确保所有元素存在
+    if (!testModeBtn || !testModePanel || !closeTestModeBtn || !exitTestModeBtn || 
+        !spawnCustomerTestBtn || !addTeaTestBtn || !testStatusText) {
+        console.error('测试模式缺少必要的DOM元素', {
+            testModeBtn, testModePanel, closeTestModeBtn, exitTestModeBtn,
+            spawnCustomerTestBtn, addTeaTestBtn, testStatusText
+        });
+        return;
+    }
+    
+    console.log('测试模式元素已找到, 添加事件监听器...');
+    
+    // 使测试面板可拖动，使用标题作为拖动手柄
+    if (testModeHeader) {
+        makeDraggable(testModePanel, testModeHeader);
+    }
+    
+    // 打开测试模式面板
+    testModeBtn.addEventListener('click', function() {
+        console.log('点击测试模式按钮');
+        document.getElementById('menu-panel').style.display = 'none';
+        
+        // 调整面板位置到中央
+        testModePanel.style.top = '10%';
+        testModePanel.style.left = '5%';
+        
+        testModePanel.style.display = 'flex';
+    });
+    
+    // 关闭测试模式面板但不退出测试模式
+    closeTestModeBtn.addEventListener('click', function() {
+        console.log('点击关闭测试模式面板按钮');
+        testModePanel.style.display = 'none';
+    });
+    
+    // 进入测试模式
+    spawnCustomerTestBtn.addEventListener('click', function() {
+        console.log('点击生成测试顾客按钮');
+        if (!isTestMode) {
+            enterTestMode();
+        }
+        // 生成测试顾客
+        spawnTestCustomer();
+    });
+    
+    // 快速制作茶饮
+    addTeaTestBtn.addEventListener('click', function() {
+        console.log('点击快速制作茶饮按钮');
+        if (!isTestMode) {
+            enterTestMode();
+        }
+        // 快速添加所有茶饮
+        quickAddAllTeas();
+        testStatusText.textContent = '已添加所有茶饮供测试';
+    });
+    
+    // 退出测试模式
+    exitTestModeBtn.addEventListener('click', function() {
+        console.log('点击退出测试模式按钮');
+        exitTestMode();
+        testModePanel.style.display = 'none';
+    });
+    
+    console.log('测试模式初始化完成');
+}
+
+// 进入测试模式
+function enterTestMode() {
+    if (!isTestMode) {
+        console.log('进入测试模式');
+        // 备份当前游戏数据
+        originalGameData = JSON.parse(JSON.stringify(gameData));
+        
+        // 设置测试模式标记
+        gameData.testMode = true;
+        
+        // 创建测试模式指示器
+        if (!testIndicator) {
+            testIndicator = document.createElement('div');
+            testIndicator.className = 'test-mode-indicator';
+            testIndicator.textContent = '测试模式';
+            document.body.appendChild(testIndicator);
+        } else {
+            testIndicator.style.display = 'block';
+        }
+        
+        // 切换到茶摊选项卡
+        const teaTab = document.querySelector('.game-tab[data-tab="tea-tab"]');
+        if (teaTab) {
+            teaTab.click();
+        }
+        
+        isTestMode = true;
+        document.getElementById('test-status-text').textContent = '测试模式已启动';
+        addMessage('已进入测试模式，您的游戏进度不会受到影响。');
+    }
+}
+
+// 退出测试模式
+function exitTestMode() {
+    if (isTestMode && originalGameData) {
+        console.log('退出测试模式');
+        // 恢复原始游戏数据
+        Object.assign(gameData, originalGameData);
+        
+        // 确保测试模式标记被清除
+        gameData.testMode = false;
+        
+        // 更新所有显示
+        updateAllDisplays();
+        
+        // 隐藏测试模式指示器
+        if (testIndicator) {
+            testIndicator.style.display = 'none';
+        }
+        
+        isTestMode = false;
+        document.getElementById('test-status-text').textContent = '准备就绪';
+        addMessage('已退出测试模式，游戏恢复原始状态。');
+    }
+}
+
+// 生成测试顾客
+function spawnTestCustomer() {
+    // 确保当前没有其他顾客
+    if (gameData.customer.active) {
+        resetCustomer();
+    }
+    
+    console.log('生成特殊顾客进行测试');
+    
+    // 从特殊顾客名单中随机选择一个顾客
+    const specialCustomerName = gameData.customerNames[Math.floor(Math.random() * gameData.customerNames.length)];
+    
+    // 设置一个测试顾客，随机选择一个茶饮
+    const allTeas = Object.keys(gameData.recipeIngredients);
+    const randomTea = allTeas[Math.floor(Math.random() * allTeas.length)];
+    
+    // 随机选择0-2个小料
+    const availableToppings = Object.keys(gameData.toppings);
+    const numToppings = Math.floor(Math.random() * 3);
+    const toppingChoices = [];
+    
+    for (let i = 0; i < numToppings; i++) {
+        const topping = availableToppings[Math.floor(Math.random() * availableToppings.length)];
+        if (!toppingChoices.includes(topping)) {
+            toppingChoices.push(topping);
+        }
+    }
+    
+    // 更新顾客状态
+    gameData.customer = {
+        active: true,
+        name: specialCustomerName, // 使用特殊顾客名字
+        isVIP: true,               // 标记为VIP顾客
+        teaChoice: randomTea,
+        toppingChoices: toppingChoices,
+        arrivalTime: Date.now(),
+        patience: 300000, // 5分钟超长耐心
+        served: false,
+        isTestCustomer: true       // 标记为测试顾客，避免触发故事解锁
+    };
+    
+    // 显示顾客消息
+    let customerMessage = `特殊顾客 ${specialCustomerName} 来到茶铺，想要一杯${randomTea}`;
+    if (toppingChoices.length > 0) {
+        customerMessage += `，加${toppingChoices.join('、')}`;
+    }
+    addMessage(customerMessage);
+    document.getElementById('test-status-text').textContent = `特殊顾客 ${specialCustomerName} 已生成`;
+    
+    // 确保更新顾客显示
+    updateCustomerDisplay();
+    
+    // 切换到茶摊选项卡让用户可以直接服务顾客
+    const teaTab = document.querySelector('.game-tab[data-tab="tea-tab"]');
+    if (teaTab) {
+        teaTab.click();
+    }
+}
+
+// 快速添加所有茶饮
+function quickAddAllTeas() {
+    // 清空现有的茶饮
+    gameData.madeTeas = [];
+    
+    console.log('快速添加所有茶饮');
+    
+    // 添加所有可能的茶饮
+    const allTeas = Object.keys(gameData.recipeIngredients);
+    
+    allTeas.forEach((tea, index) => {
+        const teaId = 'tea-' + Date.now() + '-' + index;
+        const currentTime = Date.now();
+        
+        gameData.madeTeas.push({
+            id: teaId,
+            name: tea,
+            makeTime: currentTime,
+            hot: true, // 初始为热饮
+            toppings: []
+        });
+        
+        // 记录制作时间
+        gameData.teaMakeTimes[teaId] = currentTime;
+    });
+    
+    // 确保所有小料有足够的库存
+    for (const topping in gameData.toppings) {
+        gameData.toppings[topping] = 10; // 设置为10份
+    }
+    
+    // 更新显示
+    updateTeaDisplay();
+    updateToppingsDisplay();
+}
+
+// 确保在DOM加载完成后调用测试模式初始化
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM加载完成，准备初始化测试模式');
+    // 由于initGame会在页面加载时被调用，确保我们的代码在之后运行
+    setTimeout(function() {
+        initTestMode();
+    }, 500); // 给原始初始化留一点时间
+});
+
+// 覆盖原来的方式，保留但不依赖它
+if (typeof initGame === 'function') {
+    const originalInitGame = initGame;
+    initGame = function() {
+        const result = originalInitGame.apply(this, arguments);
+        initTestMode();
+        return result;
+    };
+}
+
+// 添加测试模式窗口拖动功能
+function makeDraggable(element, handle) {
+    console.log('设置测试面板可拖动');
+    
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+    if (handle) {
+        // 如果指定了handle，则使用handle作为拖动触发区域
+        handle.onmousedown = dragMouseDown;
+        handle.ontouchstart = dragTouchStart;
+    } else {
+        // 否则直接用元素本身
+        element.onmousedown = dragMouseDown;
+        element.ontouchstart = dragTouchStart;
+    }
+    
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // 获取鼠标初始位置
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+    
+    function dragTouchStart(e) {
+        e = e || window.event;
+        // 阻止屏幕滚动
+        e.preventDefault();
+        // 获取触摸初始位置
+        pos3 = e.touches[0].clientX;
+        pos4 = e.touches[0].clientY;
+        document.ontouchend = closeDragElement;
+        document.ontouchmove = elementTouchDrag;
+    }
+    
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // 计算新位置
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        
+        // 设置元素新位置，并保持在视口内
+        const newTop = (element.offsetTop - pos2);
+        const newLeft = (element.offsetLeft - pos1);
+        
+        // 确保面板不会被拖出屏幕
+        const maxTop = window.innerHeight - element.offsetHeight;
+        const maxLeft = window.innerWidth - element.offsetWidth;
+        
+        element.style.top = Math.min(Math.max(0, newTop), maxTop) + "px";
+        element.style.left = Math.min(Math.max(0, newLeft), maxLeft) + "px";
+    }
+    
+    function elementTouchDrag(e) {
+        e = e || window.event;
+        // 阻止屏幕滚动
+        e.preventDefault();
+        // 计算新位置
+        pos1 = pos3 - e.touches[0].clientX;
+        pos2 = pos4 - e.touches[0].clientY;
+        pos3 = e.touches[0].clientX;
+        pos4 = e.touches[0].clientY;
+        
+        // 设置元素新位置，并保持在视口内
+        const newTop = (element.offsetTop - pos2);
+        const newLeft = (element.offsetLeft - pos1);
+        
+        // 确保面板不会被拖出屏幕
+        const maxTop = window.innerHeight - element.offsetHeight;
+        const maxLeft = window.innerWidth - element.offsetWidth;
+        
+        element.style.top = Math.min(Math.max(0, newTop), maxTop) + "px";
+        element.style.left = Math.min(Math.max(0, newLeft), maxLeft) + "px";
+    }
+    
+    function closeDragElement() {
+        // 停止移动
+        document.onmouseup = null;
+        document.onmousemove = null;
+        document.ontouchend = null;
+        document.ontouchmove = null;
+    }
+}
+
+// 在initTestMode中添加调用拖动功能的代码
+function initTestMode() {
+    console.log('初始化测试模式...');
+    
+    // 为测试模式按钮添加事件监听器
+    const testModeBtn = document.getElementById('test-mode-button');
+    const testModePanel = document.getElementById('test-mode-panel');
+    const testModeHeader = testModePanel ? testModePanel.querySelector('.test-header') : null;
+    const closeTestModeBtn = document.getElementById('close-test-mode');
+    const exitTestModeBtn = document.getElementById('exit-test-mode');
+    const spawnCustomerTestBtn = document.getElementById('spawn-customer-test');
+    const addTeaTestBtn = document.getElementById('add-tea-test');
+    const testStatusText = document.getElementById('test-status-text');
+    
+    // 确保所有元素存在
+    if (!testModeBtn || !testModePanel || !closeTestModeBtn || !exitTestModeBtn || 
+        !spawnCustomerTestBtn || !addTeaTestBtn || !testStatusText) {
+        console.error('测试模式缺少必要的DOM元素', {
+            testModeBtn, testModePanel, closeTestModeBtn, exitTestModeBtn,
+            spawnCustomerTestBtn, addTeaTestBtn, testStatusText
+        });
+        return;
+    }
+    
+    console.log('测试模式元素已找到, 添加事件监听器...');
+    
+    // 使测试面板可拖动，使用标题作为拖动手柄
+    if (testModeHeader) {
+        makeDraggable(testModePanel, testModeHeader);
+    }
+    
+    // 打开测试模式面板
+    testModeBtn.addEventListener('click', function() {
+        console.log('点击测试模式按钮');
+        document.getElementById('menu-panel').style.display = 'none';
+        
+        // 调整面板位置到中央
+        testModePanel.style.top = '10%';
+        testModePanel.style.left = '5%';
+        
+        testModePanel.style.display = 'flex';
+    });
+    
+    // 关闭测试模式面板但不退出测试模式
+    closeTestModeBtn.addEventListener('click', function() {
+        console.log('点击关闭测试模式面板按钮');
+        testModePanel.style.display = 'none';
+    });
+    
+    // 进入测试模式
+    spawnCustomerTestBtn.addEventListener('click', function() {
+        console.log('点击生成测试顾客按钮');
+        if (!isTestMode) {
+            enterTestMode();
+        }
+        // 生成测试顾客
+        spawnTestCustomer();
+    });
+    
+    // 快速制作茶饮
+    addTeaTestBtn.addEventListener('click', function() {
+        console.log('点击快速制作茶饮按钮');
+        if (!isTestMode) {
+            enterTestMode();
+        }
+        // 快速添加所有茶饮
+        quickAddAllTeas();
+        testStatusText.textContent = '已添加所有茶饮供测试';
+    });
+    
+    // 退出测试模式
+    exitTestModeBtn.addEventListener('click', function() {
+        console.log('点击退出测试模式按钮');
+        exitTestMode();
+        testModePanel.style.display = 'none';
+    });
+    
+    console.log('测试模式初始化完成');
 }

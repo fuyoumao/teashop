@@ -46,9 +46,30 @@
                 <button id="save-manager">存档管理</button>
                 <button id="recipe-button">查看配方</button>
                 <button id="collection-button">集卡册</button>
+                <button id="test-mode-button">测试模式</button>
+                <button id="pause-btn" class="menu-pause-btn">暂停游戏</button>
                 <button id="close-menu">关闭</button>
             </div>
         </header>
+
+        <!-- 添加测试模式面板 -->
+        <div class="test-mode-panel" id="test-mode-panel" style="display: none;">
+            <div class="test-header">
+                <div class="test-title">测试模式</div>
+                <button id="close-test-mode" class="close-btn">×</button>
+            </div>
+            <div class="test-content">
+                <div class="test-instruction">这里是测试模式，您可以测试顾客提取茶饮的功能，不会影响原有游戏。</div>
+                <div class="test-controls">
+                    <button id="spawn-customer-test">生成顾客</button>
+                    <button id="add-tea-test">快速制作茶饮</button>
+                    <button id="exit-test-mode">退出测试</button>
+                </div>
+                <div class="test-status">
+                    <div>测试状态：<span id="test-status-text">准备就绪</span></div>
+                </div>
+            </div>
+        </div>
 
         <!-- 信息面板 (可滑动查看) -->
         <div class="info-swiper">
@@ -337,12 +358,12 @@
                     <div class="processing-state">点击加工材料</div>
                 </div>
                 <div class="processing-recipes">
-                    <button class="recipe-btn" data-recipe="红糖">红糖</button>
-                    <button class="recipe-btn" data-recipe="薄荷叶">薄荷叶</button>
-                    <button class="recipe-btn" data-recipe="姜丝">姜丝</button>
-                    <button class="recipe-btn" data-recipe="柚子丝">柚子丝</button>
-                    <button class="recipe-btn" data-recipe="银耳丝">银耳丝</button>
-                    <button class="recipe-btn" data-recipe="柠檬片">柠檬片</button>
+                    <button class="recipe-btn" data-recipe="红糖">甘蔗</button>
+                    <button class="recipe-btn" data-recipe="薄荷叶">薄荷</button>
+                    <button class="recipe-btn" data-recipe="姜丝">生姜</button>
+                    <button class="recipe-btn" data-recipe="柚子丝">柚子</button>
+                    <button class="recipe-btn" data-recipe="银耳丝">银耳</button>
+                    <button class="recipe-btn" data-recipe="柠檬片">柠檬</button>
                 </div>
             </div>
         </div>
@@ -415,6 +436,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- 暂停遮罩 -->
+    <div class="pause-overlay" id="pause-overlay">
+        <div>游戏已暂停</div>
+        <button class="resume-btn" id="resume-btn">继续游戏</button>
     </div>
 
     <script src="tea_shop_mobile.js"></script>
