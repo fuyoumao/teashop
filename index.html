@@ -38,15 +38,14 @@
                 <div class="title">Tea Shop</div>
                 <div class="menu-btn" id="menu-btn">≡</div>
             </div>
-            
+
             <!-- 菜单面板 -->
             <div class="menu-panel" id="menu-panel">
-                <button id="save">保存</button>
-                <button id="load">加载</button>
                 <button id="save-manager">存档管理</button>
                 <button id="recipe-button">查看配方</button>
                 <button id="collection-button">集卡册</button>
-                <button id="test-mode-button">测试模式</button>
+                <button id="unlock-progress-button">解锁进度</button>
+                <button id="special-customer-test-button">特殊顾客解锁测试</button>
                 <button id="pause-btn" class="menu-pause-btn">暂停游戏</button>
                 <button id="close-menu">关闭</button>
             </div>
@@ -55,32 +54,90 @@
         <!-- 添加测试模式面板 -->
         <div class="test-mode-panel" id="test-mode-panel" style="display: none;">
             <div class="test-header">
-                <div class="test-title">测试模式</div>
+                <div class="test-title">🍵 茶铺测试中心</div>
                 <button id="close-test-mode" class="close-btn">×</button>
             </div>
             <div class="test-content">
-                <div class="test-instruction">这里是测试模式，您可以测试顾客提取茶饮的功能，不会影响原有游戏。</div>
-                <div class="test-controls">
-                    <button id="spawn-customer-test">生成顾客</button>
-                    <button id="add-tea-test">快速制作茶饮</button>
-                    <button id="exit-test-mode">退出测试</button>
+                <!-- 快速测试区 -->
+                <div class="test-section">
+                    <div class="test-section-title">⚡ 快速测试</div>
+                    <div class="test-controls">
+                        <button id="spawn-customer-test" class="test-btn">生成顾客</button>
+                        <button id="add-tea-test" class="test-btn">制作所有茶饮</button>
+                        <button id="add-toppings-test" class="test-btn">添加所有小料</button>
+                        <button id="unlock-all-test" class="test-btn warning">解锁所有配方</button>
+                    </div>
                 </div>
+
+                <!-- 特殊顾客测试区 -->
+                <div class="test-section">
+                    <div class="test-section-title">👑 特殊顾客测试</div>
+                    <div class="test-controls special-customers">
+                        <button class="test-btn special" data-customer="凌小路" data-recipe="洛神玫瑰饮">凌小路→洛神玫瑰饮</button>
+                        <button class="test-btn special" data-customer="花花" data-recipe="桂圆红枣茶">花花→桂圆红枣茶</button>
+                        <button class="test-btn special" data-customer="江飞飞" data-recipe="焦香大麦茶">江飞飞→焦香大麦茶</button>
+                        <button class="test-btn special" data-customer="江三" data-recipe="三花决明茶">江三→三花决明茶</button>
+                        <button class="test-btn special" data-customer="江四" data-recipe="薄荷甘草凉茶">江四→薄荷甘草凉茶</button>
+                        <button class="test-btn special" data-customer="池云旗" data-recipe="陈皮姜米茶">池云旗→陈皮姜米茶</button>
+                        <button class="test-btn special" data-customer="江潮" data-recipe="冬瓜荷叶饮">江潮→冬瓜荷叶饮</button>
+                        <button class="test-btn special" data-customer="池惊暮" data-recipe="古法酸梅汤">池惊暮→古法酸梅汤</button>
+                        <button class="test-btn special" data-customer="江敕封" data-recipe="小吊梨汤">江敕封→小吊梨汤</button>
+                    </div>
+                </div>
+
+                <!-- 人数解锁测试区 -->
+                <div class="test-section">
+                    <div class="test-section-title">📈 人数解锁测试</div>
+                    <div class="test-controls">
+                        <button class="test-btn customer-count-btn" data-count="30">设置30人→桑菊润燥茶</button>
+                        <button class="test-btn customer-count-btn" data-count="60">设置60人→桂花酒酿饮</button>
+                        <button class="test-btn customer-count-btn" data-count="90">设置90人→蜜桃乌龙冷萃</button>
+                        <button class="test-btn customer-count-btn" data-count="120">设置120人→黄芪枸杞茶</button>
+                        <button class="test-btn customer-count-btn" data-count="150">设置150人→竹蔗茅根马蹄水</button>
+                    </div>
+                </div>
+
+                <!-- 系统测试区 -->
+                <div class="test-section">
+                    <div class="test-section-title">🔧 系统测试</div>
+                    <div class="test-controls">
+                        <button class="test-btn" id="check-recipe-status-btn">检查配方状态</button>
+                        <button class="test-btn" id="check-customer-visits-btn">检查顾客访问</button>
+                        <button class="test-btn danger" id="reset-progress-btn">重置解锁进度</button>
+                        <button id="exit-test-mode" class="test-btn danger">退出测试模式</button>
+                    </div>
+                </div>
+
+                <!-- 测试状态 -->
                 <div class="test-status">
-                    <div>测试状态：<span id="test-status-text">准备就绪</span></div>
+                    <div class="test-status-title">📊 测试状态</div>
+                    <div class="test-status-content">
+                        <div>状态：<span id="test-status-text">准备就绪</span></div>
+                        <div>服务顾客：<span id="test-customer-count">0</span>位</div>
+                        <div>解锁配方：<span id="test-recipe-count">2</span>个</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- 信息面板 (可滑动查看) -->
         <div class="info-swiper">
-            
+
                 <div class="swiper-wrapper">
                     <!-- 天气与季节 -->
                     <div class="swiper-slide weather-season">
-                        <div class="info-block">
-                            <div class="game-status">
-                                <span id="season">春天</span> | <span id="weather">晴天</span> | 第<span id="day">1</span>天
-                            </div>
+                                                    <div class="info-block">
+                                <div class="game-status">
+                                    <div class="status-info">
+                                        <span class="season-badge" id="season">春天</span>
+                                        <span class="weather-badge" id="weather">晴天</span>
+                                        <span class="day-badge">第<span id="day">1</span>天</span>
+                                    </div>
+                                    <div class="status-buttons">
+                                        <button id="basket-btn" class="status-btn basket-btn" title="查看篮子">🧺</button>
+                                        <button id="buy-seed-status" class="status-btn shop-btn" title="打开商店">🏪</button>
+                                    </div>
+                                </div>
                             <div class="customer-status">
                                 <div class="customer-info-row">
                                     <span class="info-label">顾客:</span>
@@ -95,9 +152,9 @@
                                     <span id="customer-toppings">-</span>
                                 </div>
                             </div>
-                       
+
                     </div>
-                    
+
                     <!-- 消息记录 -->
                     <div class="swiper-slide message-log">
 
@@ -106,7 +163,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 指示器 -->
                 <div class="swiper-pagination"></div>
             </div>
@@ -117,6 +174,9 @@
             <span id="selected-seed">请选择种子类型</span>
         </div> -->
 
+        <!-- 商店遮罩层 -->
+        <div id="shop-overlay" class="shop-overlay"></div>
+        
         <!-- 种子/商店面板 -->
         <div class="shop-panel" id="seed-panel">
             <div class="shop-header">
@@ -127,7 +187,7 @@
                 </div>
                 <button id="close-shop" class="close-btn">×</button>
             </div>
-            
+
             <div class="shop-content">
                 <div class="shop-items-container">
                     <!-- 种子区域 -->
@@ -159,6 +219,15 @@
                             <button class="seed-btn" data-price="1">柚子</button>
                             <button class="seed-btn" data-price="1">话梅</button>
                             <button class="seed-btn" data-price="1">柠檬</button>
+                            <!-- 新增种子 -->
+                            <button class="seed-btn" data-price="2">桑叶</button>
+                            <button class="seed-btn" data-price="2">杭白菊</button>
+                            <button class="seed-btn" data-price="3">水蜜桃</button>
+                            <button class="seed-btn" data-price="3">黄芪</button>
+                            <button class="seed-btn" data-price="2">白茅根</button>
+                            <button class="seed-btn" data-price="2">马蹄</button>
+                            <button class="seed-btn" data-price="2">糯米</button>
+                            <button class="seed-btn" data-price="1">米</button>
                         </div>
                     </div>
 
@@ -170,17 +239,28 @@
                             <button class="shop-item-btn" data-item="银耳" data-price="3">银耳 (3铜板)</button>
                             <button class="shop-item-btn" data-item="红糖" data-price="2">红糖 (2铜板)</button>
                             <button class="shop-item-btn" data-item="薄荷叶" data-price="2">薄荷叶 (2铜板)</button>
+                            <!-- 新增物品 -->
+                            <button class="shop-item-btn" data-item="冰糖" data-price="3">冰糖 (3铜板)</button>
+                            <button class="shop-item-btn" data-item="乌龙茶包" data-price="4">乌龙茶包 (4铜板)</button>
                         </div>
                     </div>
-
-                    <!-- 购物车预览 -->
-                    <div class="cart-preview">
+                </div>
+                
+                <!-- 新的购物车预览 - 独立组件 -->
+                <div class="cart-preview">
+                    <div class="cart-preview-header">
+                        <div class="cart-preview-title">购物车</div>
                         <div class="cart-preview-total">
-                            购物车: <span id="cart-items-count">0</span> 个物品
-                            总计: <span id="cart-total">0</span> 铜板
+                            <div><span id="cart-items-count">0</span> 件商品</div>
+                            <div>总计: <span id="cart-total">0</span> 铜板</div>
                         </div>
-                        <button class="cart-preview-button" id="checkout-btn">结账</button>
                     </div>
+                    
+                    <div class="cart-preview-items">
+                        <div class="cart-preview-empty">购物车是空的</div>
+                    </div>
+                    
+                    <button class="cart-preview-button" id="checkout-btn">查看购物车</button>
                 </div>
             </div>
         </div>
@@ -190,10 +270,52 @@
             已添加到购物车
         </div>
 
+        <!-- 小篮子选择窗口 -->
+        <div class="basket-select-panel" id="basket-select-panel">
+            <div class="basket-select-header">
+                <div class="basket-select-title">选择种植物品</div>
+                <button id="confirm-plant-btn" class="confirm-plant-top-btn" disabled>确认种植</button>
+                <button id="go-to-shop-btn" class="go-to-shop-btn" style="display: none;">去购买</button>
+                <button id="close-basket-select" class="close-btn">×</button>
+            </div>
+            <div class="basket-select-content">
+                <div class="basket-select-info">
+                    <div class="selected-plot-info">
+                        <span>田地: </span><span id="selected-plot-name">1号田地</span>
+                    </div>
+                </div>
+
+                <div class="seed-selection-section">
+                    <div class="seed-section-title">库存种子：</div>
+                    <div class="seed-grid available-seeds" id="available-seeds-grid">
+                        <!-- 有库存的种子将在这里动态生成 -->
+                    </div>
+                </div>
+
+                        <div class="seed-selection-section">
+            <div class="seed-section-title">缺货种子（点击购买）：</div>
+            <div class="seed-grid unavailable-seeds" id="unavailable-seeds-grid">
+                <!-- 没有库存的种子将在这里动态生成 -->
+            </div>
+        </div>
+
+        <!-- 购物车显示区域 -->
+        <div class="basket-cart-section" id="basket-cart-section" style="display: none;">
+            <div class="basket-cart-title">🛒 购物车内容</div>
+            <div class="basket-cart-items" id="basket-cart-items">
+                <!-- 购物车物品将在这里动态生成 -->
+            </div>
+            <div class="basket-cart-total" id="basket-cart-total">
+                总计: 0 铜板
+            </div>
+        </div>
+    </div>
+</div>
+
         <!-- 配方面板 -->
         <div class="recipe-panel" id="recipe-panel">
-            <div class="recipe-header">
-                <div class="recipe-title">茶饮配方</div>
+            <div class="recipe-select-header">
+                <div class="recipe-select-title">茶饮配方</div>
                 <button id="close-recipe" class="close-btn">×</button>
             </div>
             <div class="recipe-items">
@@ -235,28 +357,86 @@
                 </div>
                 <div class="recipe-item">
                     <div class="recipe-name">小吊梨汤</div>
-                    <div class="recipe-ingredients">雪花梨, 银耳, 话梅, 枸杞</div>
+                    <div class="recipe-ingredients">雪花梨, 银耳丝, 话梅, 枸杞</div>
                 </div>
                 <div class="recipe-item">
                     <div class="recipe-name">柠檬茶</div>
                     <div class="recipe-ingredients">柠檬</div>
                 </div>
+                
+                <!-- 按顾客解锁的配方 -->
+                <div class="recipe-item special-unlock" data-customer="凌小路" style="display: none;">
+                    <div class="recipe-name">🔒 洛神玫瑰饮</div>
+                    <div class="recipe-ingredients">需要凌小路来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="花花" style="display: none;">
+                    <div class="recipe-name">🔒 桂圆红枣茶</div>
+                    <div class="recipe-ingredients">需要花花来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="江飞飞" style="display: none;">
+                    <div class="recipe-name">🔒 焦香大麦茶</div>
+                    <div class="recipe-ingredients">需要江飞飞来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="江三" style="display: none;">
+                    <div class="recipe-name">🔒 三花决明茶</div>
+                    <div class="recipe-ingredients">需要江三来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="江四" style="display: none;">
+                    <div class="recipe-name">🔒 薄荷甘草凉茶</div>
+                    <div class="recipe-ingredients">需要江四来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="池云旗" style="display: none;">
+                    <div class="recipe-name">🔒 陈皮姜米茶</div>
+                    <div class="recipe-ingredients">需要池云旗来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="江潮" style="display: none;">
+                    <div class="recipe-name">🔒 冬瓜荷叶饮</div>
+                    <div class="recipe-ingredients">需要江潮来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="池惊暮" style="display: none;">
+                    <div class="recipe-name">🔒 古法酸梅汤</div>
+                    <div class="recipe-ingredients">需要池惊暮来访解锁</div>
+                </div>
+                <div class="recipe-item special-unlock" data-customer="江敕封" style="display: none;">
+                    <div class="recipe-name">🔒 小吊梨汤</div>
+                    <div class="recipe-ingredients">需要江敕封来访解锁</div>
+                </div>
+                
+                <!-- 按人数解锁的配方 -->
+                <div class="recipe-item unlockable-recipe" data-unlock="30" style="display: none;">
+                    <div class="recipe-name">🔒 桑菊润燥茶</div>
+                    <div class="recipe-ingredients">服务30位顾客后解锁</div>
+                </div>
+                <div class="recipe-item unlockable-recipe" data-unlock="60" style="display: none;">
+                    <div class="recipe-name">🔒 桂花酒酿饮</div>
+                    <div class="recipe-ingredients">服务60位顾客后解锁</div>
+                </div>
+                <div class="recipe-item unlockable-recipe" data-unlock="90" style="display: none;">
+                    <div class="recipe-name">🔒 蜜桃乌龙冷萃</div>
+                    <div class="recipe-ingredients">服务90位顾客后解锁</div>
+                </div>
+                <div class="recipe-item unlockable-recipe" data-unlock="120" style="display: none;">
+                    <div class="recipe-name">🔒 黄芪枸杞茶</div>
+                    <div class="recipe-ingredients">服务120位顾客后解锁</div>
+                </div>
+                <div class="recipe-item unlockable-recipe" data-unlock="150" style="display: none;">
+                    <div class="recipe-name">🔒 竹蔗茅根马蹄水</div>
+                    <div class="recipe-ingredients">服务150位顾客后解锁</div>
+                </div>
             </div>
-            <div class="recipe-note">所有茶饮均可冷热服务, 刚制作的茶为热饮，20秒后自动变为凉饮</div>
         </div>
 
         <!-- 主游戏区域 - 分成选项卡 -->
         <div class="game-tabs">
-            <button class="game-tab active" data-tab="farm-kitchen-tab">种植与厨房</button>
+            <button class="game-tab active" data-tab="farm-tab">种植</button>
+            <button class="game-tab" data-tab="kitchen-tab">厨房</button>
             <button class="game-tab" data-tab="tea-tab">茶摊</button>
         </div>
 
-        <!-- 农田和厨房集成选项卡 -->
-        <div class="game-content active" id="farm-kitchen-tab">
-            <!-- 农田和小篮子布局 -->
-            <div class="farm-kitchen-layout">
-                <!-- 左侧：农田 -->
+        <!-- 种植选项卡 -->
+        <div class="game-content active" id="farm-tab">
                 <div class="farm-section">
+
                     <div class="plots-container">
                         <div class="plot" id="plot-0">
                             <div class="plot-checkbox-container">
@@ -266,7 +446,7 @@
                             <div class="plot-info">
                                 <div class="plot-row">
                                     <div class="plot-label">物品:</div>
-                                    <div class="plot-value plot-name">空地</div>
+                                <div class="plot-value plot-name clickable-item" data-plot-id="0">空地</div>
                                 </div>
                                 <div class="plot-row">
                                     <div class="plot-label">湿度:</div>
@@ -295,7 +475,65 @@
                             <div class="plot-info">
                                 <div class="plot-row">
                                     <div class="plot-label">物品:</div>
-                                    <div class="plot-value plot-name">空地</div>
+                                <div class="plot-value plot-name clickable-item" data-plot-id="1">空地</div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">湿度:</div>
+                                <div class="plot-value plot-moisture">50%</div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">肥沃:</div>
+                                <div class="plot-value plot-fertility">50%</div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">生长:</div>
+                                <div class="plot-value plot-stage">-</div>
+                                <div class="plot-icon"></div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">计时:</div>
+                                <div class="plot-value plot-timer">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="plot" id="plot-2">
+                        <div class="plot-checkbox-container">
+                            <input type="checkbox" class="plot-checkbox" data-plot-id="2">
+                            <label>3号田地</label>
+                        </div>
+                        <div class="plot-info">
+                            <div class="plot-row">
+                                <div class="plot-label">物品:</div>
+                                <div class="plot-value plot-name clickable-item" data-plot-id="2">空地</div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">湿度:</div>
+                                <div class="plot-value plot-moisture">50%</div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">肥沃:</div>
+                                <div class="plot-value plot-fertility">50%</div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">生长:</div>
+                                <div class="plot-value plot-stage">-</div>
+                                <div class="plot-icon"></div>
+                            </div>
+                            <div class="plot-row">
+                                <div class="plot-label">计时:</div>
+                                <div class="plot-value plot-timer">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="plot" id="plot-3">
+                        <div class="plot-checkbox-container">
+                            <input type="checkbox" class="plot-checkbox" data-plot-id="3">
+                            <label>4号田地</label>
+                        </div>
+                        <div class="plot-info">
+                            <div class="plot-row">
+                                <div class="plot-label">物品:</div>
+                                <div class="plot-value plot-name clickable-item" data-plot-id="3">空地</div>
                                 </div>
                                 <div class="plot-row">
                                     <div class="plot-label">湿度:</div>
@@ -318,52 +556,43 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- 右侧：小篮子 -->
-                <div class="kitchen-section">
-                    <div class="section-title">
-                        茶水摊小篮子
-                        <button id="basket-recipe-button" class="recipe-corner-btn">配方</button>
-                        <button id="buy-seed-basket" class="shop-corner-btn">商店</button>
                     </div>
-                    <div class="basket-content">
-                        <div class="basket-item">篮子是空的</div>
-                    </div>
-                    
-                    <!-- 快速操作栏 -->
-                    <div class="quick-actions">
-                        <button class="quick-action-btn" id="quick-stove-btn">前往炉灶</button>
-                        <button class="quick-action-btn" id="quick-process-btn">前往案板</button>
-                    </div>
-                </div>
-            </div>
-            
+
+        <!-- 厨房选项卡 -->
+        <div class="game-content" id="kitchen-tab">
             <!-- 炉灶 -->
             <div class="stoves-container">
-                <div class="section-title">炉灶</div>
                 <div class="stoves">
                     <div class="stove" id="stove-1">
+                        <div class="stove-label">炉灶1</div>
                         <div class="stove-state">点击放水</div>
                     </div>
                     <div class="stove" id="stove-2">
+                        <div class="stove-label">炉灶2</div>
                         <div class="stove-state">点击放水</div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- 案板 -->
             <div class="processing-container">
-                <div class="section-title">案板</div>
                 <div class="processing-board" id="processing-board">
+                    <div class="processing-label">案板</div>
                     <div class="processing-state">点击加工材料</div>
                 </div>
                 <div class="processing-recipes">
-                    <button class="recipe-btn" data-recipe="红糖">甘蔗</button>
-                    <button class="recipe-btn" data-recipe="薄荷叶">薄荷</button>
-                    <button class="recipe-btn" data-recipe="姜丝">生姜</button>
-                    <button class="recipe-btn" data-recipe="柚子丝">柚子</button>
-                    <button class="recipe-btn" data-recipe="银耳丝">银耳</button>
-                    <button class="recipe-btn" data-recipe="柠檬片">柠檬</button>
+                    <button class="recipe-btn" data-recipe="红糖" data-output="3">甘蔗→红糖x3</button>
+                    <button class="recipe-btn" data-recipe="薄荷叶" data-output="3">薄荷→薄荷叶x3</button>
+                    <button class="recipe-btn" data-recipe="姜丝" data-output="3">生姜→姜丝x3</button>
+                    <button class="recipe-btn" data-recipe="柚子丝" data-output="3">柚子→柚子丝x3</button>
+                    <button class="recipe-btn" data-recipe="银耳丝" data-output="3">银耳→银耳丝x3</button>
+                    <button class="recipe-btn" data-recipe="柠檬片" data-output="3">柠檬→柠檬片x3</button>
+                    <!-- 新增加工配方 -->
+                    <button class="recipe-btn" data-recipe="水蜜桃果肉" data-output="3">水蜜桃→果肉x3</button>
+                    <button class="recipe-btn" data-recipe="黄芪片" data-output="3">黄芪→黄芪片x3</button>
+                    <button class="recipe-btn" data-recipe="干桂花" data-output="3">桂花→干桂花x3</button>
+                    <button class="recipe-btn" data-recipe="小圆子" data-output="3">糯米→小圆子x3</button>
+                    <button class="recipe-btn" data-recipe="酒酿" data-output="3">米→酒酿x3</button>
                 </div>
             </div>
         </div>
@@ -374,41 +603,13 @@
             <div id="tea-info-panel"></div>
             <!-- 茶饮展示 -->
             <div class="tea-container">
-                <div class="section-title">
-                    茶摊子
-                </div>
                 <div class="tea-display">
                     <div class="no-tea">还没有制作好的茶饮</div>
                 </div>
-            </div>
-            
-            <!-- 小料区 -->
-            <div class="toppings-container">
-                <div class="section-title">小料区</div>
-                <div class="toppings-display">
-                    <div class="topping-item">
-                        <div class="topping-name">红糖</div>
-                        <div class="topping-count">5份</div>
-                    </div>
-                    <div class="topping-item">
-                        <div class="topping-name">薄荷叶</div>
-                        <div class="topping-count">5份</div>
-                    </div>
-                    <div class="topping-item">
-                        <div class="topping-name">姜丝</div>
-                        <div class="topping-count">5份</div>
-                    </div>
-                    <div class="topping-item">
-                        <div class="topping-name">柚子丝</div>
-                        <div class="topping-count">5份</div>
-                    </div>
-                    <div class="topping-item">
-                        <div class="topping-name">银耳丝</div>
-                        <div class="topping-count">5份</div>
-                    </div>
-                    <div class="topping-item">
-                        <div class="topping-name">柠檬片</div>
-                        <div class="topping-count">5份</div>
+                <!-- 小料按钮放在茶饮下面 -->
+                <div class="section-title toppings-header">
+                    <div class="toppings-display" id="toppings-display">
+                        <!-- 小料将在这里动态生成 -->
                     </div>
                 </div>
             </div>
@@ -438,12 +639,90 @@
         </div>
     </div>
 
-    <!-- 暂停遮罩 -->
-    <div class="pause-overlay" id="pause-overlay">
-        <div>游戏已暂停</div>
-        <button class="resume-btn" id="resume-btn">继续游戏</button>
-    </div>
+    <!-- 解锁进度面板 -->
+    <div class="unlock-progress-panel" id="unlock-progress-panel" style="display: none;">
+        <div class="unlock-header">
+            <div class="unlock-title">配方解锁进度</div>
+            <button id="close-unlock-progress" class="close-btn">×</button>
+        </div>
+        <div class="unlock-content">
+            <div class="progress-info">
+                <div class="current-progress">
+                    已服务顾客: <span id="served-customers-count">0</span>位
+                </div>
+                <div class="next-unlock">
+                    距离下一个解锁: <span id="next-unlock-info">查看下方列表</span>
+                </div>
+            </div>
+
+            <div class="unlock-recipe-list">
+                <div class="unlock-section-title">配方解锁条件</div>
+                <div class="unlock-recipes" id="unlock-recipes-list">
+                    <!-- 解锁配方列表将在JavaScript中动态生成 -->
+                </div>
+            </div>
+        </div>
+            </div>
+
+        <!-- 篮子查看面板 -->
+        <div class="basket-view-panel" id="basket-view-panel" style="display: none;">
+            <div class="basket-view-header">
+                <div class="basket-view-title">🧺 我的篮子</div>
+                <button id="close-basket-view" class="close-btn">×</button>
+            </div>
+            <div class="basket-view-content">
+                <div class="basket-view-info">
+                    <div class="basket-section">
+                        <div class="basket-section-title">🌱 种子库存</div>
+                        <div class="basket-items" id="basket-seeds-display">
+                            <!-- 种子将在这里动态生成 -->
+                        </div>
+                    </div>
+
+                    <div class="basket-section">
+                        <div class="basket-section-title">🌿 收获物品</div>
+                        <div class="basket-items" id="basket-materials-display">
+                            <!-- 收获物品将在这里动态生成 -->
+                        </div>
+                    </div>
+
+                    <div class="basket-section">
+                        <div class="basket-section-title">🧂 小料库存</div>
+                        <div class="basket-items" id="basket-toppings-display">
+                            <!-- 小料将在这里动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 购物车弹出窗口 -->
+        <div class="cart-popup-panel" id="cart-popup-panel" style="display: none;">
+            <div class="cart-popup-header">
+                <div class="cart-popup-title">🛒 购物车</div>
+                <button id="close-cart-popup" class="close-btn">×</button>
+            </div>
+            <div class="cart-popup-content">
+                <div class="cart-popup-summary">
+                    <div class="cart-popup-count">商品数量: <span id="cart-popup-items-count">0</span> 个</div>
+                    <div class="cart-popup-total">总计: <span id="cart-popup-total">0</span> 铜板</div>
+                </div>
+                <div class="cart-popup-items" id="cart-popup-items">
+                    <div class="cart-empty-message">购物车是空的</div>
+                </div>
+                <div class="cart-popup-actions">
+                    <button class="cart-popup-btn clear-btn" id="cart-popup-clear">清空购物车</button>
+                    <button class="cart-popup-btn checkout-btn" id="cart-popup-checkout">去结账</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 暂停遮罩 -->
+        <div class="pause-overlay" id="pause-overlay">
+            <div>游戏已暂停</div>
+            <button class="resume-btn" id="resume-btn">继续游戏</button>
+        </div>
 
     <script src="tea_shop_mobile.js"></script>
 </body>
-</html> 
+</html>
