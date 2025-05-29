@@ -306,6 +306,7 @@ const gameData = {
         catCooldown: 259200000,   // 3天冷却时间（毫秒）
         currentCat: null,       // 当前猫咪信息
         todayVisited: false,      // 今天是否已经来过     
+        lastCatDay: 0,            // 上次猫咪出现的天数     
         intimacy: {               // 亲密度记录
             '大橘猫': 0,
             '狸花猫': 0,
@@ -3430,36 +3431,44 @@ function trySpawnCustomer() {
     // 在函数开头添加
    const now = Date.now();
 
+    // 修改猫咪生成条件：每2-4天可能出现一次猫咪
     if (!gameData.cats.currentCat && 
-        gameData.currentDay % 3 === 0 && 
-        gameData.currentDay > 0 &&
-        !gameData.cats.todayVisited) {
-       // 猫咪自动生成逻辑
-       const catNames = ['大橘猫', '狸花猫', '黑猫小手套', '小白猫', '大猫猫'];
-       const catIcons = ['🧡', '🐱', '🖤', '🤍', '😺'];
-       
-       const randomIndex = Math.floor(Math.random() * catNames.length);
-       const catName = catNames[randomIndex];
-       
-       gameData.cats.currentCat = {
-           name: catName,
-           icon: catIcons[randomIndex],
-           arrivalTime: now,
-           stayDuration: 30000,
-           fed: false
-       };
-       
-       gameData.cats.lastCatTime = now;
-       gameData.cats.todayVisited = true; 
-       addMessage(`🐱 ${catName} 来到了茶铺！`);
-       // 播放猫咪叫声
-       const catAudio = new Audio('music/cat-meow-14536.mp3');
-       catAudio.volume = 0.1; // 音量10%
-       catAudio.play().catch(e => console.log('音频播放失败', e));
-       updateCustomerDisplay();
-       return;
+        gameData.currentDay >= 2 && // 从第2天开始可能出现猫咪
+        !gameData.cats.todayVisited &&
+        (gameData.currentDay - (gameData.cats.lastCatDay || 0)) >= 2) { // 至少间隔2天
+        
+        // 每天有30%的概率生成猫咪（但最多4天一定会来一次）
+        const daysSinceLastCat = gameData.currentDay - (gameData.cats.lastCatDay || 0);
+        const catChance = daysSinceLastCat >= 4 ? 1.0 : 0.3; // 4天后必定出现，否则30%概率
+        
+        if (Math.random() < catChance) {
+            // 猫咪自动生成逻辑
+            const catNames = ['大橘猫', '狸花猫', '黑猫小手套', '小白猫', '大猫猫'];
+            const catIcons = ['🧡', '🐱', '🖤', '🤍', '😺'];
+            
+            const randomIndex = Math.floor(Math.random() * catNames.length);
+            const catName = catNames[randomIndex];
+            
+            gameData.cats.currentCat = {
+                name: catName,
+                icon: catIcons[randomIndex],
+                arrivalTime: now,
+                stayDuration: 30000,
+                fed: false
+            };
+            
+            gameData.cats.lastCatTime = now;
+            gameData.cats.lastCatDay = gameData.currentDay; // 记录猫咪出现的天数
+            gameData.cats.todayVisited = true; 
+            addMessage(`🐱 ${catName} 来到了茶铺！`);
+            // 播放猫咪叫声
+            const catAudio = new Audio('music/cat-meow-14536.mp3');
+            catAudio.volume = 0.1; // 音量10%
+            catAudio.play().catch(e => console.log('音频播放失败', e));
+            updateCustomerDisplay();
+            return;
+        }
     }
-
 
     // 如果有猫咪在场，不生成新顾客
     if (gameData.cats && gameData.cats.currentCat) {
@@ -4851,8 +4860,15 @@ function spawnTestCat() {
         fed: false
     };
 
-    // 更新上次猫咪出现时间
+    // 更新猫咪相关状态
     gameData.cats.lastCatTime = Date.now();
+    gameData.cats.lastCatDay = gameData.currentDay;
+    gameData.cats.todayVisited = true;
+
+    // 播放猫咪叫声
+    const catAudio = new Audio('music/cat-meow-14536.mp3');
+    catAudio.volume = 0.1; // 音量10%
+    catAudio.play().catch(e => console.log('猫咪音效播放失败', e));
 
     addMessage(`🐱 测试猫咪 ${randomCat} ${catIcons[randomCat]} 来了！它会停留30秒`);
     updateCustomerDisplay();
