@@ -1,0 +1,173 @@
+/* 🌱 田地卡片手机端专用样式 - 协调美观版 */
+
+@media (max-width: 768px) {
+    /* 农田网格 */
+    .farm-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* 田地卡片主体 */
+    .plot-card {
+        background: var(--soft-green) !important;
+        border-radius: 12px !important;
+        padding: 8px !important;
+        min-height: 80px !important;
+        border: 2px solid transparent !important;
+        transition: all 0.3s ease !important;
+        font-size: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .plot-card:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2) !important;
+    }
+
+    /* 田地头部 */
+    .plot-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 6px !important;
+    }
+
+    /* 田地编号 - 小而精致 */
+    .plot-number {
+        width: 16px !important;
+        height: 16px !important;
+        font-size: 8px !important;
+        font-weight: bold !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: var(--primary-green) !important;
+        color: white !important;
+        border-radius: 50% !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* 种植按钮 - 紧凑美观 */
+    .plot-action {
+        padding: 3px 6px !important;
+        font-size: 8px !important;
+        border-radius: 8px !important;
+        background: var(--light-green) !important;
+        color: white !important;
+        border: none !important;
+        cursor: pointer !important;
+        font-weight: 500 !important;
+        min-width: 28px !important;
+        height: 18px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .plot-action:hover {
+        background: var(--primary-green) !important;
+        transform: scale(1.02) !important;
+    }
+
+    /* 植物视觉区域 */
+    .plot-visual {
+        height: 24px !important;
+        margin-bottom: 6px !important;
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* 土壤 */
+    .soil {
+        width: 100% !important;
+        height: 8px !important;
+        background: linear-gradient(135deg, #8D6E63, #A1887F) !important;
+        border-radius: 4px !important;
+        position: absolute !important;
+        bottom: 0 !important;
+    }
+
+    /* 植物图标 */
+    .plant {
+        font-size: 16px !important;
+        z-index: 1 !important;
+    }
+
+    /* 湿度肥力统计 - 协调比例 */
+    .plot-stats {
+        display: flex !important;
+        justify-content: space-between !important;
+        margin-bottom: 4px !important;
+        gap: 4px !important;
+    }
+
+    .stat {
+        display: flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        font-size: 9px !important;
+        font-weight: 500 !important;
+    }
+
+    /* 图标大小适中 */
+    .stat-icon {
+        font-size: 14px !important;
+        line-height: 1 !important;
+    }
+
+    /* 数值文字 */
+    .stat-value {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: var(--text-dark) !important;
+    }
+
+    /* 计时器文本 */
+    .plot-timer, .plot-ready {
+        font-size: 8px !important;
+        text-align: center !important;
+        margin-top: 2px !important;
+        color: var(--text-medium) !important;
+        line-height: 1.2 !important;
+    }
+
+    .plot-ready {
+        color: var(--primary-green) !important;
+        font-weight: 600 !important;
+    }
+
+    /* 空田地样式 */
+    .plot-card.empty {
+        background: var(--soft-white) !important;
+        border: 2px dashed var(--light-green) !important;
+    }
+
+    .empty-hint {
+        font-size: 12px !important;
+        color: var(--text-medium) !important;
+        text-align: center !important;
+        font-weight: 600 !important;
+    }
+
+    /* 成熟田地发光效果 */
+    .plot-action.harvest {
+        background: var(--accent-yellow) !important;
+        color: var(--text-dark) !important;
+        animation: glow 2s infinite !important;
+    }
+
+    @keyframes glow {
+        0%, 100% {
+            box-shadow: 0 0 8px rgba(255, 213, 79, 0.5) !important;
+        }
+        50% {
+            box-shadow: 0 0 12px rgba(255, 213, 79, 0.8) !important;
+        }
+    }
+}

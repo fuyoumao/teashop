@@ -1,0 +1,995 @@
+/* 🍵 可爱茶铺 UI 设计样式 */
+
+:root {
+    /* 主要颜色：绿色系 */
+    --primary-green: #4CAF50;
+    --light-green: #81C784;
+    --soft-green: #E8F5E8;
+    
+    /* 辅助颜色：白色 */
+    --pure-white: #FFFFFF;
+    --soft-white: #F8F9FA;
+    
+    /* 点缀颜色：暖黄色 */
+    --accent-yellow: #FFD54F;
+    --light-yellow: #FFF9C4;
+    
+    /* 文字颜色 */
+    --text-dark: #2E7D32;
+    --text-medium: #388E3C;
+    --text-light: #66BB6A;
+    
+    /* 阴影 */
+    --shadow-soft: 0 4px 12px rgba(76, 175, 80, 0.15);
+    --shadow-medium: 0 6px 20px rgba(76, 175, 80, 0.2);
+    --shadow-strong: 0 8px 25px rgba(76, 175, 80, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'Segoe UI Emoji', sans-serif;
+    background: linear-gradient(135deg, var(--soft-green) 0%, var(--pure-white) 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 16px;
+    overflow-x: hidden;
+}
+
+/* 🌟 可爱的动画效果 */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 213, 79, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 213, 79, 0.8);
+    }
+}
+
+/* 🏠 顶部区域 */
+.cute-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--pure-white);
+    border-radius: 24px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+.cute-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-green), var(--light-green), var(--accent-yellow));
+}
+
+.coins-bubble {
+    display: flex;
+    align-items: center;
+    background: var(--light-yellow);
+    border-radius: 20px;
+    padding: 8px 16px;
+    animation: pulse 2s infinite;
+}
+
+.coin-icon {
+    font-size: 20px;
+    margin-right: 8px;
+    animation: wiggle 3s infinite;
+}
+
+.coin-count {
+    font-weight: bold;
+    color: var(--text-dark);
+    font-size: 16px;
+}
+
+.title-container {
+    text-align: center;
+    flex: 1;
+}
+
+.cute-title {
+    font-size: 24px;
+    color: var(--primary-green);
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(76, 175, 80, 0.2);
+}
+
+.subtitle {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-top: 2px;
+}
+
+.menu-bubble {
+    background: var(--primary-green);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s ease;
+}
+
+.menu-bubble:hover {
+    transform: scale(1.1);
+    background: var(--light-green);
+}
+
+.menu-icon {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 💬 信息卡片区域 */
+.info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.info-card {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+}
+
+.weather-card .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.weather-icon {
+    font-size: 24px;
+    margin-right: 8px;
+    animation: bounce 2s infinite;
+}
+
+.season-text {
+    font-size: 14px;
+    color: var(--text-medium);
+    font-weight: 500;
+}
+
+.day-info {
+    font-size: 16px;
+    color: var(--text-dark);
+    font-weight: bold;
+}
+
+.day-number {
+    color: var(--primary-green);
+    font-size: 18px;
+}
+
+.customer-card {
+    display: flex;
+    align-items: center;
+}
+
+.customer-avatar {
+    font-size: 32px;
+    margin-right: 12px;
+    animation: wiggle 4s infinite;
+}
+
+.customer-info {
+    flex: 1;
+}
+
+.customer-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.customer-order {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-bottom: 8px;
+}
+
+.patience-bar {
+    position: relative;
+    background: #E0E0E0;
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.patience-fill {
+    background: linear-gradient(90deg, var(--accent-yellow), var(--primary-green));
+    height: 100%;
+    width: 85%;
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+.patience-text {
+    font-size: 10px;
+    color: var(--text-medium);
+    position: absolute;
+    right: 4px;
+    top: -16px;
+}
+
+/* 🎯 选项卡导航 */
+.cute-tabs {
+    display: flex;
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 6px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.tab-button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tab-button.active {
+    background: var(--primary-green);
+    color: white;
+    transform: scale(1.05);
+}
+
+.tab-button:not(.active):hover {
+    background: var(--soft-green);
+}
+
+.tab-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.tab-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 📄 内容区域 */
+.tab-content {
+    display: none;
+    animation: fadeInUp 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-icon {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.section-title h2 {
+    color: var(--text-dark);
+    font-size: 20px;
+    margin: 0;
+}
+
+/* 🌱 农场区域 */
+.farm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.plot-card {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.plot-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--light-green);
+}
+
+.plot-card.empty {
+    background: var(--soft-white);
+    border: 2px dashed var(--light-green);
+}
+
+.plot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.plot-number {
+    background: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.plot-action {
+    background: var(--light-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plot-action:hover {
+    background: var(--primary-green);
+    transform: scale(1.05);
+}
+
+.plot-action.harvest {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+    animation: glow 2s infinite;
+}
+
+.plot-visual {
+    position: relative;
+    height: 60px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.soil {
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(135deg, #8D6E63, #A1887F);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 0;
+}
+
+.plant {
+    font-size: 24px;
+    z-index: 1;
+}
+
+.plant.growing {
+    animation: bounce 2s infinite;
+}
+
+.plant.mature {
+    animation: pulse 1.5s infinite;
+}
+
+.empty-hint {
+    color: var(--text-light);
+    font-size: 12px;
+    font-style: italic;
+}
+
+.plot-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.stat-icon {
+    margin-right: 4px;
+}
+
+.stat-value {
+    color: var(--text-medium);
+    font-weight: 500;
+}
+
+.plot-timer, .plot-ready {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-medium);
+}
+
+.plot-ready {
+    color: var(--accent-yellow);
+    font-weight: bold;
+    animation: pulse 1s infinite;
+}
+
+/* 🚀 快捷操作按钮 */
+.quick-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.action-button {
+    background: var(--pure-white);
+    border: 2px solid var(--light-green);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.action-button:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.action-button.water:hover {
+    background: #2196F3;
+}
+
+.action-button.fertilize:hover {
+    background: var(--primary-green);
+}
+
+.action-button.basket:hover {
+    background: #FF9800;
+}
+
+.action-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.action-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 🍳 厨房区域 */
+.kitchen-area {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.area-title {
+    color: var(--text-dark);
+    font-size: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.stoves-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stove-card {
+    background: var(--soft-green);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stove-card.cooking {
+    background: linear-gradient(135deg, var(--light-yellow), var(--accent-yellow));
+    animation: pulse 2s infinite;
+}
+
+.stove-card.empty {
+    background: var(--soft-white);
+    border: 2px dashed var(--light-green);
+}
+
+.stove-visual {
+    position: relative;
+    height: 40px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fire {
+    position: absolute;
+    bottom: 0;
+    animation: wiggle 1s infinite;
+}
+
+.pot {
+    font-size: 24px;
+    z-index: 1;
+}
+
+.steam {
+    position: absolute;
+    top: -10px;
+    animation: bounce 1.5s infinite;
+}
+
+.stove-info {
+    margin-bottom: 8px;
+}
+
+.recipe-name {
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.cooking-timer {
+    font-size: 12px;
+    color: var(--text-medium);
+}
+
+.empty-text {
+    color: var(--text-light);
+    font-size: 12px;
+    font-style: italic;
+}
+
+.progress-bar {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: var(--primary-green);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.start-cooking {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-cooking:hover {
+    background: var(--light-green);
+    transform: scale(1.05);
+}
+
+/* 📋 案板区域 */
+.processing-board {
+    text-align: center;
+}
+
+.board-visual {
+    margin-bottom: 12px;
+}
+
+.cutting-board {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.ingredients {
+    font-size: 20px;
+    animation: wiggle 3s infinite;
+}
+
+.processing-recipes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.recipe-chip {
+    background: var(--soft-green);
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.recipe-chip:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* 🍵 茶摊区域 */
+.tea-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tea-item {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tea-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+}
+
+.tea-visual {
+    position: relative;
+    height: 60px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tea-cup {
+    font-size: 32px;
+}
+
+.steam-effect, .ice-effect {
+    position: absolute;
+    top: -10px;
+    font-size: 16px;
+    animation: bounce 2s infinite;
+}
+
+.tea-info {
+    margin-bottom: 12px;
+}
+
+.tea-name {
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.tea-temp {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.tea-temp.hot {
+    background: rgba(255, 152, 0, 0.2);
+    color: #FF6F00;
+}
+
+.tea-temp.cold {
+    background: rgba(33, 150, 243, 0.2);
+    color: #1976D2;
+}
+
+.tea-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.serve-button {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.serve-button:hover {
+    background: #FFC107;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-medium);
+}
+
+.add-topping {
+    background: var(--light-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-topping:hover {
+    background: var(--primary-green);
+    transform: scale(1.05);
+}
+
+/* 🍯 小料区域 */
+.toppings-area {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.toppings-grid {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.topping-item {
+    background: var(--soft-green);
+    border-radius: 16px;
+    padding: 12px;
+    text-align: center;
+    min-width: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.topping-item:hover {
+    background: var(--light-green);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.topping-icon {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.topping-name {
+    font-size: 12px;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.topping-count {
+    font-size: 10px;
+    color: var(--text-medium);
+    font-weight: bold;
+}
+
+/* 🛒 浮动购物车 */
+.floating-cart {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background: var(--accent-yellow);
+    border: none;
+    border-radius: 50%;
+    box-shadow: var(--shadow-strong);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.floating-cart:hover {
+    transform: scale(1.1);
+    background: #FFC107;
+}
+
+.cart-icon {
+    font-size: 24px;
+    color: var(--text-dark);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #F44336;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+}
+
+/* 💬 消息气泡 */
+.message-bubble {
+    position: fixed;
+    bottom: 90px;
+    left: 20px;
+    right: 20px;
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow-medium);
+    display: flex;
+    align-items: center;
+    animation: slideInUp 0.5s ease;
+    z-index: 99;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.message-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    color: var(--primary-green);
+}
+
+.message-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+/* 📱 响应式设计 */
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+    
+    .cute-title {
+        font-size: 20px;
+    }
+    
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .farm-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tea-display {
+        grid-template-columns: 1fr;
+    }
+    
+    .stoves-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .action-button {
+        min-width: 120px;
+    }
+}
+
+/* 🎊 特殊效果 */
+.sparkle {
+    animation: sparkle 1.5s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+} 

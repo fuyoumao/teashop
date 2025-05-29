@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍵 可爱茶铺 - UI设计展示</title>
+    <link rel="stylesheet" href="ui_design_cute.css">
+</head>
+<body>
+    <!-- 顶部区域 -->
+    <header class="cute-header">
+        <div class="coins-bubble">
+            <span class="coin-icon">🪙</span>
+            <span class="coin-count">100</span>
+        </div>
+        <div class="title-container">
+            <h1 class="cute-title">🍵 可爱茶铺</h1>
+            <div class="subtitle">古风经营小游戏</div>
+        </div>
+        <button class="menu-bubble">
+            <span class="menu-icon">☰</span>
+        </button>
+    </header>
+
+    <!-- 信息卡片区域 -->
+    <section class="info-cards">
+        <div class="info-card weather-card">
+            <div class="card-header">
+                <span class="weather-icon">☀️</span>
+                <span class="season-text">春天 · 晴天</span>
+            </div>
+            <div class="day-info">第 <span class="day-number">1</span> 天</div>
+        </div>
+
+        <div class="info-card customer-card">
+            <div class="customer-avatar">👧</div>
+            <div class="customer-info">
+                <div class="customer-name">小花</div>
+                <div class="customer-order">想要：桂花茶 🌼</div>
+                <div class="patience-bar">
+                    <div class="patience-fill"></div>
+                    <span class="patience-text">耐心：85%</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主要功能选项卡 -->
+    <nav class="cute-tabs">
+        <button class="tab-button active" data-tab="farm">
+            <span class="tab-icon">🌱</span>
+            <span class="tab-text">种植</span>
+        </button>
+        <button class="tab-button" data-tab="kitchen">
+            <span class="tab-icon">🍳</span>
+            <span class="tab-text">厨房</span>
+        </button>
+        <button class="tab-button" data-tab="shop">
+            <span class="tab-icon">🏪</span>
+            <span class="tab-text">茶摊</span>
+        </button>
+    </nav>
+
+    <!-- 种植页面 -->
+    <section class="tab-content active" id="farm">
+        <div class="section-title">
+            <span class="title-icon">🌱</span>
+            <h2>我的小农场</h2>
+        </div>
+        
+        <div class="farm-grid">
+            <div class="plot-card">
+                <div class="plot-header">
+                    <span class="plot-number">1</span>
+                    <button class="plot-action">🌰 种植</button>
+                </div>
+                <div class="plot-visual">
+                    <div class="soil"></div>
+                    <div class="plant growing">🌱</div>
+                </div>
+                <div class="plot-stats">
+                    <div class="stat">
+                        <span class="stat-icon">💧</span>
+                        <span class="stat-value">75%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">🌿</span>
+                        <span class="stat-value">60%</span>
+                    </div>
+                </div>
+                <div class="plot-timer">⏰ 2分30秒</div>
+            </div>
+
+            <div class="plot-card empty">
+                <div class="plot-header">
+                    <span class="plot-number">2</span>
+                    <button class="plot-action">➕ 种植</button>
+                </div>
+                <div class="plot-visual">
+                    <div class="soil"></div>
+                    <div class="empty-hint">点击种植</div>
+                </div>
+                <div class="plot-stats">
+                    <div class="stat">
+                        <span class="stat-icon">💧</span>
+                        <span class="stat-value">50%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">🌿</span>
+                        <span class="stat-value">50%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plot-card">
+                <div class="plot-header">
+                    <span class="plot-number">3</span>
+                    <button class="plot-action harvest">🎉 收获</button>
+                </div>
+                <div class="plot-visual">
+                    <div class="soil"></div>
+                    <div class="plant mature">🌸</div>
+                </div>
+                <div class="plot-stats">
+                    <div class="stat">
+                        <span class="stat-icon">💧</span>
+                        <span class="stat-value">80%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">🌿</span>
+                        <span class="stat-value">90%</span>
+                    </div>
+                </div>
+                <div class="plot-ready">✨ 可以收获了！</div>
+            </div>
+
+            <div class="plot-card empty">
+                <div class="plot-header">
+                    <span class="plot-number">4</span>
+                    <button class="plot-action">➕ 种植</button>
+                </div>
+                <div class="plot-visual">
+                    <div class="soil"></div>
+                    <div class="empty-hint">点击种植</div>
+                </div>
+                <div class="plot-stats">
+                    <div class="stat">
+                        <span class="stat-icon">💧</span>
+                        <span class="stat-value">50%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">🌿</span>
+                        <span class="stat-value">50%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷操作按钮 -->
+        <div class="quick-actions">
+            <button class="action-button water">
+                <span class="action-icon">💧</span>
+                <span class="action-text">浇水</span>
+            </button>
+            <button class="action-button fertilize">
+                <span class="action-icon">🌿</span>
+                <span class="action-text">施肥</span>
+            </button>
+            <button class="action-button basket">
+                <span class="action-icon">🧺</span>
+                <span class="action-text">篮子</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- 厨房页面 -->
+    <section class="tab-content" id="kitchen">
+        <div class="section-title">
+            <span class="title-icon">🍳</span>
+            <h2>温馨小厨房</h2>
+        </div>
+
+        <!-- 炉灶区域 -->
+        <div class="kitchen-area">
+            <h3 class="area-title">🔥 炉灶制茶</h3>
+            <div class="stoves-grid">
+                <div class="stove-card cooking">
+                    <div class="stove-visual">
+                        <div class="fire">🔥</div>
+                        <div class="pot">🫖</div>
+                        <div class="steam">💨</div>
+                    </div>
+                    <div class="stove-info">
+                        <div class="recipe-name">桂花茶</div>
+                        <div class="cooking-timer">⏰ 1分20秒</div>
+                    </div>
+                    <div class="cooking-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stove-card empty">
+                    <div class="stove-visual">
+                        <div class="pot empty">🫖</div>
+                    </div>
+                    <div class="stove-info">
+                        <div class="empty-text">点击制茶</div>
+                    </div>
+                    <button class="start-cooking">开始制茶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 案板区域 -->
+        <div class="kitchen-area">
+            <h3 class="area-title">🔪 案板加工</h3>
+            <div class="processing-board">
+                <div class="board-visual">
+                    <div class="cutting-board">📋</div>
+                    <div class="ingredients">🥕🌿</div>
+                </div>
+                <div class="processing-recipes">
+                    <button class="recipe-chip">甘蔗→红糖</button>
+                    <button class="recipe-chip">薄荷→薄荷叶</button>
+                    <button class="recipe-chip">生姜→姜丝</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 茶摊页面 -->
+    <section class="tab-content" id="shop">
+        <div class="section-title">
+            <span class="title-icon">🍵</span>
+            <h2>温馨茶摊</h2>
+        </div>
+
+        <!-- 制作好的茶饮 -->
+        <div class="tea-display">
+            <div class="tea-item">
+                <div class="tea-visual">
+                    <div class="tea-cup">🍵</div>
+                    <div class="steam-effect">✨</div>
+                </div>
+                <div class="tea-info">
+                    <div class="tea-name">桂花茶</div>
+                    <div class="tea-temp hot">热茶 🔥</div>
+                </div>
+                <div class="tea-actions">
+                    <button class="serve-button">🎉 服务顾客</button>
+                    <button class="add-topping">➕ 加料</button>
+                </div>
+            </div>
+
+            <div class="tea-item">
+                <div class="tea-visual">
+                    <div class="tea-cup">🧊</div>
+                    <div class="ice-effect">❄️</div>
+                </div>
+                <div class="tea-info">
+                    <div class="tea-name">柠檬茶</div>
+                    <div class="tea-temp cold">冰茶 ❄️</div>
+                </div>
+                <div class="tea-actions">
+                    <button class="serve-button">🎉 服务顾客</button>
+                    <button class="add-topping">➕ 加料</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 小料区域 -->
+        <div class="toppings-area">
+            <h3 class="area-title">🍯 可用小料</h3>
+            <div class="toppings-grid">
+                <div class="topping-item">
+                    <span class="topping-icon">🍯</span>
+                    <span class="topping-name">蜂蜜</span>
+                    <span class="topping-count">x3</span>
+                </div>
+                <div class="topping-item">
+                    <span class="topping-icon">🟤</span>
+                    <span class="topping-name">红糖</span>
+                    <span class="topping-count">x5</span>
+                </div>
+                <div class="topping-item">
+                    <span class="topping-icon">🌿</span>
+                    <span class="topping-name">薄荷叶</span>
+                    <span class="topping-count">x2</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 浮动购物车按钮 -->
+    <button class="floating-cart">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-badge">3</span>
+    </button>
+
+    <!-- 底部消息气泡 -->
+    <div class="message-bubble">
+        <span class="message-icon">💬</span>
+        <span class="message-text">欢迎来到可爱茶铺！开始您的经营之旅吧～</span>
+    </div>
+
+    <script src="ui_design_cute.js"></script>
+</body>
+</html> 

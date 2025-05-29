@@ -1,0 +1,2735 @@
+/* 🍵 可爱茶铺 - 完整游戏样式 */
+
+/* 加载界面样式 */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-family: 'Arial', sans-serif;
+}
+
+.loading-content {
+    text-align: center;
+    max-width: 400px;
+    padding: 40px 20px;
+}
+
+.game-title h1 {
+    font-size: 2.5rem;
+    color: #2E7D32;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    animation: titlePulse 2s ease-in-out infinite;
+}
+
+.game-title .subtitle {
+    font-size: 1rem;
+    color: #4CAF50;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.start-section {
+    margin-bottom: 40px;
+}
+
+.start-game-btn {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.start-game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.start-hint {
+    color: #4CAF50;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.loading-section {
+    margin-top: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 15px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #66BB6A);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.loading-leaf {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    animation: leafSway 1.5s ease-in-out infinite;
+    transition: left 0.3s ease;
+}
+
+.loading-text {
+    color: #2E7D32;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.loading-percentage {
+    color: #4CAF50;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* 动画效果 */
+@keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes leafSway {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-10deg); }
+    50% { transform: translate(-50%, -50%) rotate(10deg); }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .game-title h1 {
+        font-size: 2rem;
+    }
+
+    .loading-content {
+        padding: 20px 15px;
+        max-width: 90%;
+    }
+
+    .start-game-btn {
+        padding: 12px 25px;
+        font-size: 1.1rem;
+    }
+}
+
+:root {
+    /* 主要颜色：绿色系 */
+    --primary-green: #4CAF50;
+    --light-green: #81C784;
+    --soft-green: #E8F5E8;
+
+    /* 辅助颜色：白色 */
+    --pure-white: #FFFFFF;
+    --soft-white: #F8F9FA;
+
+    /* 点缀颜色：暖黄色 */
+    --accent-yellow: #FFD54F;
+    --light-yellow: #FFF9C4;
+
+    /* 蓝色系 */
+    --light-blue: #E3F2FD;
+
+    /* 文字颜色 */
+    --text-dark: #2E7D32;
+    --text-medium: #388E3C;
+    --text-light: #66BB6A;
+
+    /* 阴影 */
+    --shadow-soft: 0 4px 12px rgba(76, 175, 80, 0.15);
+    --shadow-medium: 0 6px 20px rgba(76, 175, 80, 0.2);
+    --shadow-strong: 0 8px 25px rgba(76, 175, 80, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'Segoe UI Emoji', sans-serif;
+    background: linear-gradient(135deg, var(--soft-green) 0%, var(--pure-white) 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 16px;
+    overflow-x: hidden;
+}
+
+/* 🌟 可爱的动画效果 */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 213, 79, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 213, 79, 0.8);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
+
+/* 🏠 顶部区域 */
+.cute-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--pure-white);
+    border-radius: 24px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+.cute-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-green), var(--light-green), var(--accent-yellow));
+}
+
+.coins-bubble {
+    display: flex;
+    align-items: center;
+    background: var(--light-yellow);
+    border-radius: 20px;
+    padding: 8px 16px;
+    animation: pulse 2s infinite;
+}
+
+.coin-icon {
+    font-size: 20px;
+    margin-right: 8px;
+    animation: wiggle 3s infinite;
+}
+
+.coin-count {
+    font-weight: bold;
+    color: var(--text-dark);
+    font-size: 16px;
+}
+
+.title-container {
+    text-align: center;
+    flex: 1;
+}
+
+.cute-title {
+    font-size: 24px;
+    color: var(--primary-green);
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(76, 175, 80, 0.2);
+}
+
+.subtitle {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-top: 2px;
+}
+
+.menu-bubble {
+    background: var(--primary-green);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.menu-bubble:hover {
+    transform: scale(1.1);
+    background: var(--light-green);
+}
+
+.menu-icon {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 💬 信息卡片区域 */
+.info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.info-card {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* 天气卡片新布局 */
+.weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.weather-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: 2px solid var(--light-green);
+    border-radius: 16px;
+    margin-right: 12px;
+}
+
+.weather-icon {
+    font-size: 32px;
+    animation: bounce 2s infinite;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.coins-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.coins-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 193, 7, 0.25));
+    padding: 6px 10px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 193, 7, 0.3);
+    box-shadow: var(--shadow-soft);
+}
+
+.day-info {
+    font-size: 13px;
+    color: var(--text-dark);
+    font-weight: 600;
+    text-align: center;
+    background: var(--soft-green);
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--light-green);
+}
+
+.day-number {
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+.coins-info .coin-icon {
+    font-size: 16px;
+    margin-right: 0;
+    animation: none;
+}
+
+.coins-info .coin-count {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--accent-yellow);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.status-btn {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-btn:hover {
+    background: var(--light-green);
+    transform: scale(1.05);
+}
+
+/* 顾客卡片新样式 */
+.customer-card {
+    background: linear-gradient(135deg, var(--soft-green), var(--soft-white));
+    border: 2px solid var(--light-green);
+}
+
+.customer-content {
+    width: 100%;
+}
+
+.customer-header {
+    margin-bottom: 6px;
+}
+
+.customer-name-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.customer-icon {
+    font-size: 16px;
+    animation: bounce 2s infinite;
+    flex-shrink: 0;
+}
+
+.customer-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-dark);
+    line-height: 1.2;
+}
+
+.customer-order {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-bottom: 8px;
+    line-height: 1.3;
+    padding-left: 22px; /* 对齐图标位置 */
+}
+
+.patience-bar {
+    position: relative;
+    background: #E0E0E0;
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.patience-fill {
+    background: linear-gradient(90deg, var(--accent-yellow), var(--primary-green));
+    height: 100%;
+    width: 85%;
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+    transition: width 0.3s ease;
+}
+
+.patience-text {
+    font-size: 10px;
+    color: var(--text-medium);
+    position: absolute;
+    right: 4px;
+    top: -16px;
+}
+
+/* 快速测试按钮 */
+.quick-test-btn {
+    background: var(--soft-green);
+    border: 1px solid var(--light-green);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    align-self: flex-start;
+}
+
+.quick-test-btn:hover {
+    background: var(--light-green);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* 🎯 选项卡导航 */
+.cute-tabs {
+    display: flex;
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+    gap: 4px;
+}
+
+.tab-button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 6px;
+    border: none;
+    background: transparent;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: var(--primary-green);
+}
+
+.tab-button.active {
+    background: var(--primary-green);
+    color: white;
+    transform: scale(1.05);
+}
+
+.tab-button:not(.active):hover {
+    background: var(--soft-green);
+    color: var(--text-dark);
+}
+
+.tab-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.tab-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 📄 内容区域 */
+.tab-content {
+    display: none;
+    animation: fadeInUp 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-icon {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.section-title h2 {
+    color: var(--text-dark);
+    font-size: 20px;
+    margin: 0;
+}
+
+/* 🌱 农场区域 */
+.farm-area {
+    /* 农田区域使用厨房区域的样式 */
+}
+
+.farm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    /* 移除 margin-bottom，因为现在在容器内 */
+}
+
+.plot-card {
+    background: var(--soft-green);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.plot-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--light-green);
+}
+
+.plot-card.empty {
+    background: var(--soft-white);
+    border: 2px dashed var(--light-green);
+}
+
+.plot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.plot-number {
+    background: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.plot-action {
+    background: var(--light-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plot-action:hover {
+    background: var(--primary-green);
+    transform: scale(1.05);
+}
+
+.plot-action.harvest {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+    animation: glow 2s infinite;
+}
+
+.plot-visual {
+    position: relative;
+    height: 60px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.soil {
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(135deg, #8D6E63, #A1887F);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 0;
+}
+
+.plant {
+    font-size: 24px;
+    z-index: 1;
+}
+
+.plant.growing {
+    animation: bounce 2s infinite;
+}
+
+.plant.mature {
+    animation: pulse 1.5s infinite;
+}
+
+.empty-hint {
+    color: var(--text-light);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.plot-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.stat-icon {
+    margin-right: 4px;
+    font-size: 15px;
+}
+
+.stat-value {
+    color: var(--text-medium);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.plot-timer, .plot-ready {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-medium);
+}
+
+.plot-ready {
+    color: var(--accent-yellow);
+    font-weight: bold;
+    animation: pulse 1s infinite;
+}
+
+/* 🚀 快捷操作按钮 */
+.actions-area {
+    /* 快捷操作区域使用厨房区域的样式 */
+}
+
+.quick-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.action-button {
+    background: var(--pure-white);
+    border: 2px solid var(--light-green);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+    color: var(--text-dark);
+}
+
+.action-text {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.action-button:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.action-button.water:hover {
+    background: #2196F3;
+}
+
+.action-button.fertilize:hover {
+    background: var(--primary-green);
+}
+
+.action-button.basket:hover {
+    background: #FF9800;
+}
+
+.action-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.action-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 🍳 厨房区域 */
+.kitchen-area {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.area-title {
+    color: var(--text-dark);
+    font-size: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+/* 特殊顾客档案区域头部 */
+.area-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.customer-test-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.test-btn {
+    background: linear-gradient(135deg, #FF9800, #FFB74D);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(255, 152, 0, 0.2);
+    font-weight: 500;
+}
+
+.test-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+    background: linear-gradient(135deg, #F57C00, #FF9800);
+}
+
+.test-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(255, 152, 0, 0.2);
+}
+
+.stoves-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stove-card {
+    background: var(--soft-green);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.stove-card.cooking {
+    background: linear-gradient(135deg, var(--light-yellow), var(--accent-yellow));
+    animation: pulse 2s infinite;
+}
+
+.stove-card.empty {
+    background: var(--soft-white);
+    border: 2px dashed var(--light-green);
+}
+
+.stove-visual {
+    position: relative;
+    height: 40px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fire {
+    position: absolute;
+    bottom: 0;
+    animation: wiggle 1s infinite;
+}
+
+.pot {
+    font-size: 24px;
+    z-index: 1;
+}
+
+.steam {
+    position: absolute;
+    top: -10px;
+    animation: bounce 1.5s infinite;
+}
+
+.stove-info {
+    margin-bottom: 8px;
+}
+
+.recipe-name {
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.cooking-timer {
+    font-size: 12px;
+    color: var(--text-medium);
+}
+
+.empty-text {
+    color: var(--text-light);
+    font-size: 12px;
+    font-style: italic;
+}
+
+.progress-bar {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: var(--primary-green);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.start-cooking {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-cooking:hover {
+    background: var(--light-green);
+    transform: scale(1.05);
+}
+
+/* 📋 案板区域 */
+.processing-board {
+    text-align: center;
+}
+
+.board-visual {
+    margin-bottom: 12px;
+}
+
+.cutting-board {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.ingredients {
+    font-size: 20px;
+    animation: wiggle 3s infinite;
+}
+
+.processing-info {
+    margin-bottom: 12px;
+}
+
+.processing-status {
+    font-size: 14px;
+    color: var(--text-medium);
+    font-style: italic;
+}
+
+.processing-recipes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.recipe-chip {
+    background: var(--soft-green);
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.recipe-chip:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: scale(1.05);
+}
+
+.recipe-chip.active {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+}
+
+/* 🍵 茶摊区域 */
+.tea-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.no-tea-hint {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px 15px;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.hint-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.hint-text {
+    font-size: 12px;
+}
+
+.tea-item {
+    background: var(--pure-white);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tea-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.tea-visual {
+    position: relative;
+    height: 35px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tea-cup {
+    font-size: 24px;
+}
+
+.steam-effect, .ice-effect {
+    position: absolute;
+    top: -6px;
+    font-size: 12px;
+    animation: bounce 2s infinite;
+}
+
+.tea-info {
+    margin-bottom: 6px;
+}
+
+.tea-name {
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.tea-temp {
+    font-size: 9px;
+    padding: 2px 4px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.tea-temp.hot {
+    background: rgba(255, 152, 0, 0.2);
+    color: #FF6F00;
+}
+
+.tea-temp.cold {
+    background: rgba(33, 150, 243, 0.2);
+    color: #1976D2;
+}
+
+.tea-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.serve-button {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 9px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.serve-button:hover {
+    background: #FFC107;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-medium);
+}
+
+.add-topping {
+    background: var(--light-green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 3px 6px;
+    font-size: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-topping:hover {
+    background: var(--primary-green);
+    transform: scale(1.05);
+}
+
+/* 🍯 小料区域 */
+.toppings-area {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.toppings-grid {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.topping-item {
+    background: var(--soft-green);
+    border-radius: 16px;
+    padding: 12px;
+    text-align: center;
+    min-width: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.topping-item:hover {
+    background: var(--light-green);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.topping-icon {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.topping-name {
+    font-size: 12px;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.topping-count {
+    font-size: 10px;
+    color: var(--text-medium);
+    font-weight: bold;
+}
+
+/* 🛒 浮动购物车 */
+.floating-cart {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background: var(--accent-yellow);
+    border: none;
+    border-radius: 50%;
+    box-shadow: var(--shadow-strong);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.floating-cart:hover {
+    transform: scale(1.1);
+    background: #FFC107;
+}
+
+.cart-icon {
+    font-size: 24px;
+    color: var(--text-dark);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #F44336;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+}
+
+/* 💬 消息气泡 */
+.message-bubble {
+    position: fixed;
+    bottom: 90px;
+    left: 20px;
+    right: 20px;
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow-medium);
+    display: flex;
+    align-items: center;
+    animation: slideInUp 0.5s ease;
+    z-index: 99;
+    transition: all 0.3s ease;
+}
+
+.message-bubble.hidden {
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.message-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    color: var(--primary-green);
+}
+
+.message-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+/* 🎮 面板样式 */
+.menu-panel, .shop-panel, .recipe-panel, .test-panel, .basket-panel,
+.recipe-selection-panel, .topping-selection-panel, .inventory-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--pure-white);
+    border-radius: 24px;
+    box-shadow: var(--shadow-strong);
+    z-index: 1000;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow: hidden;
+    animation: fadeInUp 0.3s ease;
+}
+
+.menu-panel {
+    width: 300px;
+}
+
+.shop-panel, .recipe-panel, .test-panel {
+    width: 400px;
+}
+
+.basket-panel {
+    width: 350px;
+}
+
+.menu-header, .panel-header {
+    background: var(--primary-green);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-header h3, .panel-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.menu-content, .panel-content {
+    padding: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: var(--soft-green);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+    background: var(--light-green);
+    transform: translateX(4px);
+}
+
+.menu-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    color: var(--text-dark);
+}
+
+.menu-text {
+    font-size: 14px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* 📱 响应式设计 */
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .cute-title {
+        font-size: 18px;
+    }
+
+    .subtitle {
+        font-size: 11px;
+    }
+
+    .info-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .info-card {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .customer-avatar {
+        font-size: 24px;
+        margin-right: 8px;
+    }
+
+    .weather-icon {
+        font-size: 20px;
+        margin-right: 6px;
+    }
+
+    .farm-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        /* 在白色容器内，不需要额外的padding */
+    }
+
+    .tea-display {
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+    }
+
+    .tea-item {
+        padding: 6px;
+        border-radius: 8px;
+    }
+
+    .tea-visual {
+        height: 30px;
+        margin-bottom: 4px;
+    }
+
+    .tea-cup {
+        font-size: 18px;
+    }
+
+    .tea-name {
+        font-size: 10px;
+    }
+
+    .tea-temp {
+        font-size: 9px;
+        padding: 1px 4px;
+    }
+
+    .serve-button {
+        padding: 4px 6px;
+        font-size: 9px;
+        border-radius: 6px;
+    }
+
+    .add-topping {
+        padding: 3px 6px;
+        font-size: 9px;
+        border-radius: 6px;
+    }
+
+    .stoves-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+    }
+
+    .stove-card {
+        padding: 6px;
+        border-radius: 8px;
+    }
+
+    .stove-visual {
+        height: 24px;
+        margin-bottom: 4px;
+    }
+
+    .pot {
+        font-size: 16px;
+    }
+
+    .recipe-name {
+        font-size: 10px;
+    }
+
+    .cooking-timer {
+        font-size: 9px;
+    }
+
+    .start-cooking {
+        padding: 4px 6px;
+        font-size: 9px;
+        border-radius: 6px;
+    }
+
+    .quick-actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .action-button {
+        min-width: 40px;
+        padding: 4px 6px;
+        font-size: 10px;
+        border-radius: 8px;
+    }
+
+    .action-icon {
+        font-size: 14px;
+        margin-bottom: 1px;
+    }
+
+    .action-text {
+        font-size: 9px;
+    }
+
+    .tab-button {
+        padding: 12px 8px;
+        font-size: 12px;
+    }
+
+    .tab-text {
+        font-size: 11px;
+    }
+
+    .menu-panel, .shop-panel, .recipe-panel, .test-panel, .basket-panel,
+    .recipe-selection-panel, .topping-selection-panel, .inventory-panel,
+    .save-panel, .load-panel {
+        width: 95vw;
+        max-width: none;
+        margin: 0;
+        max-height: 85vh;
+    }
+
+    /* 商店面板手机端特殊优化 */
+    .shop-panel {
+        height: 75vh;
+        max-height: 75vh;
+    }
+
+    .shop-panel .panel-content {
+        max-height: 35vh !important;
+        overflow-y: auto;
+    }
+
+    .shop-panel .cart-area {
+        max-height: 30vh;
+        overflow-y: auto;
+    }
+
+    /* 触摸优化 */
+    button, .clickable {
+        min-height: 44px; /* iOS推荐的最小触摸目标 */
+        -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+    }
+
+    /* 防止双击缩放 */
+    * {
+        touch-action: manipulation;
+    }
+
+    /* 滚动优化 */
+    .panel-content {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* 字体大小优化 */
+    .customer-name {
+        font-size: 14px;
+    }
+
+    .customer-order {
+        font-size: 12px;
+    }
+
+    .day-number {
+        font-size: 18px;
+    }
+
+    .season-text {
+        font-size: 12px;
+    }
+
+    /* 间距优化 */
+    .section-title {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .area-title {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    /* 整体区域间距优化 */
+    .kitchen-area, .toppings-area {
+        margin-bottom: 6px;
+        padding: 8px;
+    }
+
+    /* 田地卡片优化 */
+    .plot-card {
+        min-height: 90px;
+        padding: 8px;
+        font-size: 10px;
+        border-radius: 10px;
+    }
+
+    .plot-visual {
+        height: 28px;
+        margin-bottom: 6px;
+    }
+
+    .plot-header {
+        margin-bottom: 6px;
+    }
+
+    .plot-number {
+        width: 18px;
+        height: 18px;
+        font-size: 9px;
+    }
+
+    .plot-action {
+        padding: 3px 6px;
+        font-size: 9px;
+        border-radius: 8px;
+    }
+
+    .stat {
+        font-size: 9px;
+    }
+
+    .plot-timer, .plot-ready {
+        font-size: 8px;
+    }
+
+    .plant {
+        font-size: 16px;
+    }
+
+    .soil {
+        height: 10px;
+        border-radius: 5px;
+    }
+
+    .plot-stats {
+        margin-bottom: 4px;
+    }
+
+    .stat-icon {
+        margin-right: 3px;
+    }
+
+    .action-button {
+        min-width: 50px;
+        padding: 6px 8px;
+    }
+
+    /* 小料区域手机端优化 */
+    .toppings-area {
+        padding: 6px;
+        border-radius: 8px;
+        margin-bottom: 6px;
+    }
+
+    .toppings-grid {
+        gap: 3px;
+    }
+
+    .topping-item {
+        padding: 4px;
+        border-radius: 6px;
+        min-width: 45px;
+    }
+
+    .topping-icon {
+        font-size: 12px;
+        margin-bottom: 1px;
+    }
+
+    .topping-name {
+        font-size: 8px;
+    }
+
+    .topping-count {
+        font-size: 7px;
+    }
+
+    /* 管理页面手机端优化 */
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .stat-icon {
+        font-size: 20px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .stat-value {
+        font-size: 16px;
+    }
+
+    .customer-cards-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .customer-card {
+        padding: 8px;
+    }
+
+    .customer-card .customer-avatar {
+        font-size: 24px;
+        margin-bottom: 6px;
+    }
+
+    .save-slots-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .save-slot {
+        padding: 8px;
+    }
+
+    .slot-btn {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+
+    .import-export-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .system-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .system-buttons-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .system-info {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+}
+
+/* 🎊 特殊效果 */
+.sparkle {
+    animation: sparkle 1.5s infinite;
+}
+
+/* 🔄 加载动画 */
+.loading {
+    animation: pulse 1s infinite;
+}
+
+/* 🎯 选中状态 */
+.selected {
+    border: 2px solid var(--accent-yellow) !important;
+    box-shadow: 0 0 15px rgba(255, 213, 79, 0.5) !important;
+}
+
+/* 🚫 禁用状态 */
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+/* 📊 管理页面样式 */
+.management-area {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.stat-card {
+    background: var(--soft-green);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-icon {
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--pure-white);
+    border-radius: 50%;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.recipe-progress h4 {
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--soft-white);
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.progress-item.unlocked {
+    background: var(--soft-green);
+    color: var(--primary-green);
+}
+
+.progress-item.locked {
+    color: var(--text-light);
+}
+
+.customer-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.customer-card {
+    background: var(--soft-white);
+    border-radius: 16px;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.customer-card.vip {
+    background: var(--soft-green);
+    border: 2px solid var(--light-green);
+}
+
+/* VIP顾客卡片使用新的植物图标布局 */
+.customer-card.vip .customer-content {
+    width: 100%;
+    text-align: left;
+}
+
+.customer-card.vip .customer-header {
+    margin-bottom: 6px;
+}
+
+.customer-card.vip .customer-name-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+}
+
+.customer-card.vip .customer-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.customer-card.vip .customer-name {
+    font-weight: bold;
+    color: var(--text-dark);
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.customer-visits {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.customer-recipes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.recipe-status {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: var(--soft-green);
+    color: var(--primary-green);
+}
+
+.recipe-status.locked {
+    background: var(--soft-white);
+    color: var(--text-light);
+}
+
+/* 顾客故事样式 */
+.customer-story {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 8px 0;
+    border-left: 4px solid var(--primary-green);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.story-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--primary-green);
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.story-content {
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    text-align: left;
+    text-indent: 1em;
+}
+
+.story-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 10px;
+    color: var(--text-medium);
+}
+
+.story-effect {
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 10px;
+    color: var(--primary-green);
+    text-align: center;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.story-recipe {
+    font-size: 10px;
+    color: var(--text-medium);
+    text-align: center;
+    font-style: italic;
+}
+
+/* 彩蛋码样式 */
+.easter-egg-code {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 8px;
+    text-align: center;
+    border: 2px solid #FF8C00;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+    animation: glow 2s infinite alternate;
+}
+
+.easter-egg-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #8B4513;
+    margin-bottom: 4px;
+}
+
+.easter-egg-value {
+    font-size: 14px;
+    font-weight: bold;
+    color: #8B0000;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.easter-egg-desc {
+    font-size: 10px;
+    color: #8B4513;
+    font-style: italic;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+    }
+    100% {
+        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6);
+    }
+}
+
+.save-slots-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.save-slot {
+    background: var(--soft-white);
+    border-radius: 16px;
+    padding: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.save-slot:hover {
+    border-color: var(--light-green);
+    transform: translateY(-2px);
+}
+
+.slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.slot-number {
+    font-weight: bold;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.slot-time {
+    font-size: 11px;
+    color: var(--text-medium);
+}
+
+.slot-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.slot-btn {
+    flex: 1;
+    padding: 6px 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background: var(--primary-green);
+    color: white;
+}
+
+.save-btn:hover {
+    background: var(--light-green);
+}
+
+.load-btn {
+    background: var(--light-yellow);
+    color: var(--text-dark);
+}
+
+.load-btn:hover {
+    background: var(--accent-yellow);
+}
+
+.import-export-area h4 {
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.import-export-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* 系统管理区域 */
+.system-management-area {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-light);
+}
+
+.system-management-area h4 {
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.system-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.system-info {
+    padding: 8px 12px;
+    background: var(--light-yellow);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-yellow);
+}
+
+/* 系统管理按钮统一样式 */
+.system-btn {
+    background: var(--pure-white);
+    border: 2px solid var(--light-green);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.system-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* 导出按钮 - 绿色主题 */
+.export-btn {
+    background: var(--soft-green);
+    border-color: var(--primary-green);
+}
+
+.export-btn:hover {
+    background: var(--primary-green);
+    color: white;
+}
+
+/* 导入按钮 - 浅黄色主题 */
+.import-btn {
+    background: var(--light-yellow);
+    border-color: var(--accent-yellow);
+}
+
+.import-btn:hover {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+}
+
+/* 刷新按钮 - 绿色主题 */
+.refresh-btn {
+    background: var(--soft-green);
+    border-color: var(--primary-green);
+}
+
+.refresh-btn:hover {
+    background: var(--primary-green);
+    color: white;
+}
+
+/* 清除缓存按钮 - 浅黄色主题 */
+.clear-cache-btn {
+    background: var(--light-yellow);
+    border-color: var(--accent-yellow);
+}
+
+.clear-cache-btn:hover {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+}
+
+/* 系统管理网格布局 */
+.system-buttons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+/* 标题与按钮的布局 */
+.area-header-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.area-header-with-button .area-title {
+    margin: 0;
+    flex: 1;
+}
+
+.section-title-with-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.section-title-with-actions .section-title {
+    margin: 0;
+    flex: 1;
+}
+
+.section-title-with-actions .section-title h2 {
+    margin: 0;
+}
+
+.quick-actions-small {
+    display: flex;
+    gap: 8px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* 小按钮样式 */
+.small-action-btn {
+    background: var(--soft-green);
+    border: 2px solid var(--light-green);
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: var(--shadow-soft);
+}
+
+.small-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+    background: var(--light-green);
+    color: white;
+}
+
+.small-action-btn .btn-icon {
+    font-size: 14px;
+}
+
+.small-action-btn .btn-text {
+    font-weight: 500;
+}
+
+/* 特殊顾客档案弹窗 */
+.customer-profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInUp 0.3s ease;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+/* 测试页面不要背景虚化，且不阻挡点击 */
+.test-panel-modal .modal-overlay {
+    background: transparent;
+    backdrop-filter: none;
+    pointer-events: none;
+}
+
+/* 测试页面模态框本身也不阻挡背景点击 */
+.test-panel-modal {
+    pointer-events: none;
+}
+
+/* 但是测试窗口内容可以点击 */
+.test-panel-modal .modal-content {
+    pointer-events: auto;
+}
+
+.customer-profile-modal .modal-content {
+    background: var(--pure-white);
+    border-radius: 24px;
+    padding: 24px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    box-shadow: var(--shadow-strong);
+    animation: slideInUp 0.3s ease;
+    position: relative;
+    z-index: 1001;
+    border: 3px solid var(--light-green);
+}
+
+.customer-profile-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--soft-green);
+}
+
+.customer-profile-modal .modal-header h3 {
+    color: var(--text-dark);
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.customer-profile-modal .close-btn {
+    background: var(--light-green);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.customer-profile-modal .close-btn:hover {
+    background: var(--primary-green);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-medium);
+}
+
+/* 顾客档案行 */
+.customer-profile-row {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--soft-green), var(--soft-white));
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.customer-profile-row:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--light-green);
+}
+
+.profile-avatar {
+    font-size: 28px;
+    margin-right: 16px;
+    animation: bounce 2s infinite;
+    flex-shrink: 0;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.visit-count {
+    font-size: 14px;
+    color: var(--text-medium);
+    font-weight: 500;
+}
+
+.unlock-status {
+    font-size: 14px;
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+/* 测试页面弹窗 */
+.test-panel-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInUp 0.3s ease;
+}
+
+.test-panel-modal .modal-content {
+    background: var(--pure-white);
+    border-radius: 16px;
+    padding: 16px;
+    width: 380px;
+    max-height: 85%;
+    overflow-y: auto;
+    box-shadow: var(--shadow-strong);
+    animation: slideInRight 0.3s ease;
+    position: relative;
+    z-index: 1001;
+    border: 2px solid var(--light-green);
+    resize: both;
+    min-width: 300px;
+    min-height: 400px;
+}
+
+.test-panel-modal .modal-header {
+    cursor: grab;
+    user-select: none;
+    background: var(--soft-green);
+    margin: -16px -16px 16px -16px;
+    padding: 12px 16px;
+    border-radius: 14px 14px 0 0;
+    border-bottom: 2px solid var(--light-green);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.test-panel-modal .modal-header:active {
+    cursor: grabbing;
+}
+
+.test-panel-modal .modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text-dark);
+    flex: 1;
+}
+
+.test-panel-modal .close-btn {
+    background: var(--primary-green);
+    border: none;
+    border-radius: 8px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+    flex-shrink: 0;
+}
+
+.test-panel-modal .close-btn:hover {
+    background: #2e7d32;
+    transform: scale(1.1);
+    box-shadow: var(--shadow-medium);
+}
+
+.test-section {
+    margin-bottom: 24px;
+}
+
+.test-section h4 {
+    color: var(--text-dark);
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--soft-green);
+}
+
+.test-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.test-action-btn {
+    background: var(--soft-green);
+    border: 1px solid var(--light-green);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shadow-soft);
+    justify-content: center;
+    min-height: 36px;
+}
+
+.test-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+    background: var(--light-green);
+    color: white;
+}
+
+.test-action-btn.danger {
+    background: #ffebee;
+    border-color: #f44336;
+    color: #d32f2f;
+}
+
+.test-action-btn.danger:hover {
+    background: #f44336;
+    color: white;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .system-buttons-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .customer-profile-modal .modal-content {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .small-action-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .small-action-btn .btn-text {
+        display: none; /* 移动端只显示图标 */
+    }
+
+    .quick-actions-small {
+        gap: 6px;
+    }
+
+    .section-title-with-actions {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .area-header-with-button {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .profile-name {
+        font-size: 16px;
+    }
+
+    .profile-details {
+        font-size: 13px;
+    }
+
+    .profile-avatar {
+        font-size: 24px;
+        margin-right: 12px;
+    }
+
+    /* 测试页面移动端适配 */
+    .test-panel-modal {
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .test-panel-modal .modal-content {
+        width: 95%;
+        max-width: 350px;
+        padding: 12px;
+        max-height: 80%;
+    }
+
+    .test-panel-modal .modal-header {
+        margin: -12px -12px 12px -12px;
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .test-panel-modal .modal-header h3 {
+        font-size: 14px;
+        flex: 1;
+    }
+
+    .test-panel-modal .close-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+
+    .test-buttons-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+
+    .test-action-btn {
+        padding: 10px 12px;
+        min-height: 40px;
+        font-size: 13px;
+    }
+
+    .test-section {
+        margin-bottom: 16px;
+    }
+
+    .test-section h4 {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+}
+
+/* 测试页面专用动画 */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 猫咪礼物弹窗动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-50px);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05) translateY(0);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

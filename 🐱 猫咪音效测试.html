@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///C:/Users/admin/Desktop/tea/test-cat-sound.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 猫咪音效测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .cat-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .cat-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .cat-name {
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            color: #333;
+        }
+
+        .test-button {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .volume-control {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .volume-slider {
+            width: 200px;
+            margin: 0 10px;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* 猫咪头像样式 */
+        .cat-icon {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 60px;
+            font-size: 28px;
+            margin: 10px auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cat-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        /* 大橘猫 - 温暖的橙色 */
+        .orange-cat {
+            background: linear-gradient(45deg, #ff8c00, #ffa500);
+            color: white;
+            border: 2px solid #ff7f00;
+        }
+
+        /* 狸花猫 - 自然的条纹色 */
+        .tabby-cat {
+            background: linear-gradient(45deg, #8b4513, #cd853f);
+            color: white;
+            border: 2px solid #a0522d;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 3px,
+                rgba(255,255,255,0.1) 3px,
+                rgba(255,255,255,0.1) 6px
+            );
+        }
+
+        /* 黑猫小手套 - 神秘的黑色配白色点缀 */
+        .black-cat {
+            background: linear-gradient(45deg, #2c2c2c, #4a4a4a);
+            color: white;
+            border: 2px solid #1a1a1a;
+            position: relative;
+        }
+
+        .black-cat::after {
+            content: '🤍';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 小白猫 - 纯洁的白色 */
+        .white-cat {
+            background: linear-gradient(45deg, #ffffff, #f8f8ff);
+            color: #666;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 大猫猫 - 丰满可爱的渐变色 */
+        .big-cat {
+            background: linear-gradient(45deg, #dda0dd, #98fb98);
+            color: #444;
+            border: 2px solid #da70d6;
+            font-size: 32px;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+        }
+
+        .big-cat::before {
+            content: '💕';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* 动画效果 */
+        @keyframes catAppear {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        .cat-icon.appearing {
+            animation: catAppear 0.8s ease-out;
+        }
+
+        @keyframes catHappy {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .cat-icon.happy {
+            animation: catHappy 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐱 茶铺猫咪系统测试</h1>
+        
+        <div class="volume-control">
+            <label>🔊 音量控制: </label>
+            <input type="range" class="volume-slider" min="0" max="100" value="50" id="volumeSlider">
+            <span id="volumeDisplay">50%</span>
+        </div>
+
+        <div class="cat-showcase">
+            <div class="cat-item" onclick="testCat(&#39;大橘猫&#39;)">
+                <div class="cat-icon orange-cat happy">🐱</div>
+                <div class="cat-name">大橘猫</div>
+                <div style="font-size: 12px; color: #666;">温暖橙色</div>
+            </div>
+
+            <div class="cat-item" onclick="testCat(&#39;狸花猫&#39;)">
+                <div class="cat-icon tabby-cat happy">🐱</div>
+                <div class="cat-name">狸花猫</div>
+                <div style="font-size: 12px; color: #666;">条纹花色</div>
+            </div>
+
+            <div class="cat-item" onclick="testCat(&#39;黑猫小手套&#39;)">
+                <div class="cat-icon black-cat happy">🐱</div>
+                <div class="cat-name">黑猫小手套</div>
+                <div style="font-size: 12px; color: #666;">神秘黑色</div>
+            </div>
+
+            <div class="cat-item" onclick="testCat(&#39;小白猫&#39;)">
+                <div class="cat-icon white-cat happy">🐱</div>
+                <div class="cat-name">小白猫</div>
+                <div style="font-size: 12px; color: #666;">纯洁白色</div>
+            </div>
+
+            <div class="cat-item" onclick="testCat(&#39;大猫猫&#39;)">
+                <div class="cat-icon big-cat happy">🐱</div>
+                <div class="cat-name">大猫猫</div>
+                <div style="font-size: 12px; color: #666;">彩虹渐变</div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="test-button" onclick="playMeowSound()">
+                🔊 播放猫咪叫声
+            </button>
+            <button class="test-button" onclick="testAllCats()">
+                🎭 测试所有猫咪
+            </button>
+            <button class="test-button" onclick="triggerRandomCat()">
+                🎲 随机召唤猫咪
+            </button>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h3>🎮 测试说明</h3>
+            <ul style="text-align: left;">
+                <li><strong>点击猫咪头像</strong>：查看每只猫咪的独特设计</li>
+                <li><strong>播放音效</strong>：测试猫咪叫声是否正常</li>
+                <li><strong>动画效果</strong>：观察猫咪出现时的旋转动画</li>
+                <li><strong>音量调节</strong>：控制音效播放音量</li>
+            </ul>
+            
+            <h3>🎨 设计特色</h3>
+            <ul style="text-align: left;">
+                <li><strong>大橘猫</strong>：温暖的橙色渐变，代表友善亲近</li>
+                <li><strong>狸花猫</strong>：条纹背景，展现自然野性</li>
+                <li><strong>黑猫小手套</strong>：神秘黑色配白色爱心点缀</li>
+                <li><strong>小白猫</strong>：纯洁白色，象征优雅</li>
+                <li><strong>大猫猫</strong>：彩虹渐变，最特别的猫咪</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let currentVolume = 0.5;
+        
+        // 音量控制
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeDisplay = document.getElementById('volumeDisplay');
+        
+        volumeSlider.addEventListener('input', function() {
+            currentVolume = this.value / 100;
+            volumeDisplay.textContent = this.value + '%';
+        });
+
+        // 播放猫咪音效
+        function playMeowSound() {
+            try {
+                const audio = new Audio('./music/cat-meow-14536.mp3');
+                audio.volume = currentVolume;
+                audio.play().then(() => {
+                    showStatus('success', '🎵 猫咪音效播放成功！');
+                }).catch(error => {
+                    showStatus('error', '❌ 音效播放失败: ' + error.message);
+                    console.error('音效播放失败:', error);
+                });
+            } catch (error) {
+                showStatus('error', '❌ 音效加载失败: ' + error.message);
+                console.error('音效加载失败:', error);
+            }
+        }
+
+        // 测试单个猫咪
+        function testCat(catName) {
+            const catElements = document.querySelectorAll('.cat-icon');
+            catElements.forEach(el => {
+                el.classList.remove('appearing', 'happy');
+            });
+
+            setTimeout(() => {
+                const targetCat = event.target.closest('.cat-item').querySelector('.cat-icon');
+                targetCat.classList.add('appearing');
+                playMeowSound();
+                showStatus('success', `🐱 ${catName} 出现了！喵~`);
+                
+                setTimeout(() => {
+                    targetCat.classList.remove('appearing');
+                    targetCat.classList.add('happy');
+                }, 800);
+            }, 100);
+        }
+
+        // 测试所有猫咪
+        function testAllCats() {
+            const cats = ['大橘猫', '狸花猫', '黑猫小手套', '小白猫', '大猫猫'];
+            let index = 0;
+
+            function showNextCat() {
+                if (index < cats.length) {
+                    const catElements = document.querySelectorAll('.cat-icon');
+                    const currentCat = catElements[index];
+                    
+                    currentCat.classList.add('appearing');
+                    playMeowSound();
+                    showStatus('success', `🐱 ${cats[index]} 登场！`);
+                    
+                    setTimeout(() => {
+                        currentCat.classList.remove('appearing');
+                        currentCat.classList.add('happy');
+                    }, 800);
+                    
+                    index++;
+                    setTimeout(showNextCat, 1500);
+                } else {
+                    showStatus('success', '🎉 所有猫咪测试完成！');
+                }
+            }
+
+            showNextCat();
+        }
+
+        // 随机召唤猫咪
+        function triggerRandomCat() {
+            const cats = ['大橘猫', '狸花猫', '黑猫小手套', '小白猫', '大猫猫'];
+            const randomCat = cats[Math.floor(Math.random() * cats.length)];
+            const randomIndex = cats.indexOf(randomCat);
+            
+            const catElements = document.querySelectorAll('.cat-icon');
+            catElements.forEach(el => {
+                el.classList.remove('appearing', 'happy');
+            });
+
+            setTimeout(() => {
+                const targetCat = catElements[randomIndex];
+                targetCat.classList.add('appearing');
+                playMeowSound();
+                showStatus('success', `🎲 随机召唤：${randomCat} 出现了！`);
+                
+                setTimeout(() => {
+                    targetCat.classList.remove('appearing');
+                    targetCat.classList.add('happy');
+                }, 800);
+            }, 200);
+        }
+
+        // 显示状态消息
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            
+            setTimeout(() => {
+                statusDiv.className = 'status';
+                statusDiv.textContent = '';
+            }, 3000);
+        }
+
+        // 页面加载完成后显示欢迎信息
+        window.addEventListener('load', function() {
+            showStatus('success', '🍵 茶铺猫咪系统测试页面加载完成！');
+        });
+    </script>
+
+ </body></html>

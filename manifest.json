@@ -1,16 +1,26 @@
 {
-  "name": "Tea Shop",
-  "short_name": "Tea Shop",
+  "name": "🍵 可爱茶铺",
+  "short_name": "可爱茶铺",
+  "description": "古风经营小游戏 - 种植、制茶、经营茶铺",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#E8F5E8",
   "theme_color": "#4CAF50",
   "orientation": "portrait",
+  "categories": ["games", "entertainment"],
+  "lang": "zh-CN",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
-} 
+}

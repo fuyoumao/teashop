@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>创建应用图标</title>
+</head>
+<body>
+    <canvas id="canvas192" width="192" height="192" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <canvas id="canvas512" width="512" height="512" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    
+    <script>
+        // 创建192x192图标
+        const canvas192 = document.getElementById('canvas192');
+        const ctx192 = canvas192.getContext('2d');
+        
+        // 背景
+        ctx192.fillStyle = '#4CAF50';
+        ctx192.fillRect(0, 0, 192, 192);
+        
+        // 茶杯图标
+        ctx192.font = '120px Arial';
+        ctx192.fillStyle = '#FFFFFF';
+        ctx192.textAlign = 'center';
+        ctx192.textBaseline = 'middle';
+        ctx192.fillText('🍵', 96, 96);
+        
+        // 创建512x512图标
+        const canvas512 = document.getElementById('canvas512');
+        const ctx512 = canvas512.getContext('2d');
+        
+        // 背景
+        ctx512.fillStyle = '#4CAF50';
+        ctx512.fillRect(0, 0, 512, 512);
+        
+        // 茶杯图标
+        ctx512.font = '320px Arial';
+        ctx512.fillStyle = '#FFFFFF';
+        ctx512.textAlign = 'center';
+        ctx512.textBaseline = 'middle';
+        ctx512.fillText('🍵', 256, 256);
+        
+        // 自动下载图标
+        setTimeout(() => {
+            // 下载192x192图标
+            const link192 = document.createElement('a');
+            link192.download = 'icon-192.png';
+            link192.href = canvas192.toDataURL();
+            link192.click();
+            
+            // 下载512x512图标
+            setTimeout(() => {
+                const link512 = document.createElement('a');
+                link512.download = 'icon-512.png';
+                link512.href = canvas512.toDataURL();
+                link512.click();
+            }, 1000);
+        }, 1000);
+    </script>
+</body>
+</html>

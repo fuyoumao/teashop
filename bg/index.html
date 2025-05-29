@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍵 可爱茶铺 - 古风经营小游戏</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="farm-mobile-fix.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="可爱茶铺">
+</head>
+<body>
+    <!-- 加载界面 -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="game-title">
+                <h1>🍃 可爱茶铺 🍃</h1>
+                <p class="subtitle">一个温馨的茶饮经营小游戏</p>
+            </div>
+
+            <div class="start-section" id="start-section">
+                <button id="start-game-btn" class="start-game-btn">
+                    🌱 开始游戏
+                </button>
+                <p class="start-hint">点击开始您的茶铺经营之旅</p>
+                <div class="version-info" style="margin-top: 15px; font-size: 12px; color: #888; text-align: center; opacity: 0.8;">
+                    内测版本 v0.57
+                </div>
+            </div>
+
+            <div class="loading-section" id="loading-section" style="display: none;">
+                <div class="loading-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                        <div class="loading-leaf" id="loading-leaf">🍃</div>
+                    </div>
+                    <div class="loading-text" id="loading-text">正在准备茶铺...</div>
+                    <div class="loading-percentage" id="loading-percentage">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 游戏主界面 -->
+    <div id="game-container" class="game-container" style="display: none;">
+        <!-- 信息卡片区域 -->
+    <section class="info-cards">
+        <div class="info-card weather-card">
+            <div class="weather-main">
+                <div class="weather-display">
+                    <span class="weather-icon" id="weather-icon">☀️</span>
+                </div>
+                <div class="coins-display">
+                    <div class="coins-info">
+                        <span class="coin-icon">🪙</span>
+                        <span class="coin-count" id="coin-count">100</span>
+                    </div>
+                    <div class="day-info">第 <span class="day-number" id="day-number">1</span> 天</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card customer-card" id="customer-card">
+            <div class="customer-content">
+                <div class="customer-header">
+                    <div class="customer-name-line">
+                        <span class="customer-icon" id="customer-icon">🌵</span>
+                        <span class="customer-name" id="customer-name">暂无顾客</span>
+                    </div>
+                </div>
+                <div class="customer-order" id="customer-order">等待顾客到来...</div>
+                <div class="patience-bar" id="patience-bar" style="display: none;">
+                    <div class="patience-fill" id="patience-fill"></div>
+                    <span class="patience-text" id="patience-text">耐心：100%</span>
+                </div>
+                <button class="quick-test-btn" onclick="showTestPanelModal()" title="测试功能">
+                    🧪 测试
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主要功能选项卡 -->
+    <nav class="cute-tabs">
+        <button class="tab-button active" data-tab="farm">
+            <span class="tab-icon">🌱</span>
+            <span class="tab-text">种植</span>
+        </button>
+        <button class="tab-button" data-tab="kitchen">
+            <span class="tab-icon">🌿</span>
+            <span class="tab-text">厨房</span>
+        </button>
+        <button class="tab-button" data-tab="shop">
+            <span class="tab-icon">🍃</span>
+            <span class="tab-text">茶摊</span>
+        </button>
+        <button class="tab-button" data-tab="management">
+            <span class="tab-icon">🌾</span>
+            <span class="tab-text">管理</span>
+        </button>
+    </nav>
+
+    <!-- 种植页面 -->
+    <section class="tab-content active" id="farm">
+        <div class="section-title-with-actions">
+            <div class="section-title">
+                <span class="title-icon">🌱</span>
+                <h2>我的小农场</h2>
+            </div>
+            <div class="quick-actions-small">
+                <button class="small-action-btn" id="water-all-btn">
+                    <span class="btn-icon">💧</span>
+                    <span class="btn-text">浇水</span>
+                </button>
+                <button class="small-action-btn" id="fertilize-all-btn">
+                    <span class="btn-icon">🌿</span>
+                    <span class="btn-text">施肥</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 农田区域 -->
+        <div class="kitchen-area farm-area">
+            <h3 class="area-title">🌾 农田种植</h3>
+            <div class="farm-grid" id="farm-grid">
+                <!-- 田地将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 厨房页面 -->
+    <section class="tab-content" id="kitchen">
+        <div class="section-title">
+            <span class="title-icon">🌿</span>
+            <h2>温馨小厨房</h2>
+        </div>
+
+        <!-- 炉灶区域 -->
+        <div class="kitchen-area">
+            <h3 class="area-title">🍃 炉灶制茶</h3>
+            <div class="stoves-grid" id="stoves-grid">
+                <!-- 炉灶将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 案板区域 -->
+        <div class="kitchen-area">
+            <h3 class="area-title">🍃 案板加工</h3>
+            <div class="processing-board" id="processing-board">
+                <div class="board-visual">
+                    <div class="cutting-board">📋</div>
+                    <div class="ingredients" id="processing-ingredients">🥕🌿</div>
+                </div>
+                <div class="processing-info" id="processing-info">
+                    <div class="processing-status">点击选择加工配方</div>
+                </div>
+                <div class="processing-recipes" id="processing-recipes">
+                    <!-- 加工配方将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 茶摊页面 -->
+    <section class="tab-content" id="shop">
+        <div class="section-title">
+            <span class="title-icon">🍃</span>
+            <h2>温馨茶摊</h2>
+        </div>
+
+        <!-- 制作好的茶饮 -->
+        <div class="tea-display" id="tea-display">
+            <div class="no-tea-hint">
+                <span class="hint-icon">🫖</span>
+                <span class="hint-text">还没有制作好的茶饮哦～</span>
+            </div>
+        </div>
+
+        <!-- 小料区域 -->
+        <div class="toppings-area">
+            <h3 class="area-title">🍃 可用小料</h3>
+            <div class="toppings-grid" id="toppings-grid">
+                <!-- 小料将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 管理页面 -->
+    <section class="tab-content" id="management">
+        <div class="section-title">
+            <span class="title-icon">🌾</span>
+            <h2>经营管理</h2>
+        </div>
+
+        <!-- 顾客统计区域 -->
+        <div class="management-area">
+            <div class="area-header-with-button">
+                <h3 class="area-title">🍃 顾客统计</h3>
+                <div class="header-buttons">
+                    <button class="small-action-btn" onclick="showCustomerProfiles()">
+                        <span class="btn-icon">🌵</span>
+                        <span class="btn-text">特殊顾客档案</span>
+                    </button>
+                    <button class="small-action-btn" onclick="showCatProfiles()">
+                        <span class="btn-icon">🐱</span>
+                        <span class="btn-text">猫猫档案</span>
+                    </button>
+                    <button class="small-action-btn" onclick="showTestPanelModal()">
+                        <span class="btn-icon">🧪</span>
+                        <span class="btn-text">测试页面</span>
+                    </button>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🌸</div>
+                    <div class="stat-info">
+                        <div class="stat-label">已服务顾客</div>
+                        <div class="stat-value" id="served-customers-count">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌿</div>
+                    <div class="stat-info">
+                        <div class="stat-label">已解锁配方</div>
+                        <div class="stat-value" id="unlocked-recipes-count">2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 配方解锁进度 -->
+            <div class="recipe-progress">
+                <h4>🍃 配方解锁进度</h4>
+                <div class="progress-list" id="recipe-progress-list">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- 存档管理区域 -->
+        <div class="management-area">
+            <h3 class="area-title">🍃 存档管理</h3>
+            <div class="save-slots-grid">
+                <div class="save-slot" data-slot="1">
+                    <div class="slot-header">
+                        <span class="slot-number">存档 1</span>
+                        <span class="slot-time" id="slot-1-time">空</span>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="slot-btn save-btn" onclick="saveToSlot(1)">保存</button>
+                        <button class="slot-btn load-btn" onclick="loadFromSlot(1)">载入</button>
+                    </div>
+                </div>
+                <div class="save-slot" data-slot="2">
+                    <div class="slot-header">
+                        <span class="slot-number">存档 2</span>
+                        <span class="slot-time" id="slot-2-time">空</span>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="slot-btn save-btn" onclick="saveToSlot(2)">保存</button>
+                        <button class="slot-btn load-btn" onclick="loadFromSlot(2)">载入</button>
+                    </div>
+                </div>
+                <div class="save-slot" data-slot="3">
+                    <div class="slot-header">
+                        <span class="slot-number">存档 3</span>
+                        <span class="slot-time" id="slot-3-time">空</span>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="slot-btn save-btn" onclick="saveToSlot(3)">保存</button>
+                        <button class="slot-btn load-btn" onclick="loadFromSlot(3)">载入</button>
+                    </div>
+                </div>
+                <div class="save-slot" data-slot="4">
+                    <div class="slot-header">
+                        <span class="slot-number">存档 4</span>
+                        <span class="slot-time" id="slot-4-time">空</span>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="slot-btn save-btn" onclick="saveToSlot(4)">保存</button>
+                        <button class="slot-btn load-btn" onclick="loadFromSlot(4)">载入</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统管理功能 -->
+            <div class="system-management-area">
+                <h4 style="color: var(--text-dark);">🍃 系统管理</h4>
+                <div class="system-buttons-grid">
+                    <button class="system-btn export-btn" onclick="exportSave()">
+                        导出存档
+                    </button>
+                    <button class="system-btn import-btn" onclick="importSave()">
+                        导入存档
+                    </button>
+                    <button class="system-btn refresh-btn" onclick="forceRefreshGame()">
+                        强制刷新
+                    </button>
+                    <button class="system-btn clear-cache-btn" onclick="clearGameCache()">
+                        清除缓存
+                    </button>
+                    <button class="system-btn force-refresh-btn" onclick="forceClearCacheAndReload()" style="background: #FF9800; color: white;">
+                        🔄 强制刷新
+                    </button>
+                </div>
+                <input type="file" id="import-file" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+                <div class="system-info">
+                    <small style="color: var(--text-medium); font-size: 12px;">
+                        💡 如果游戏更新后显示异常，请点击"清除缓存"后再"强制刷新"<br>
+                        🔧 游戏版本：v1.0.2 | 缓存策略：智能模式 | 📱 支持手机强制刷新
+                    </small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 浮动购物车按钮 -->
+    <button class="floating-cart" id="cart-button">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+
+    <!-- 底部消息气泡 -->
+    <div class="message-bubble" id="message-bubble">
+        <span class="message-icon">💬</span>
+        <span class="message-text" id="message-text">欢迎来到可爱茶铺！开始您的经营之旅吧～</span>
+    </div>
+
+    <!-- 菜单面板 -->
+    <div class="menu-panel" id="menu-panel" style="display: none;">
+        <div class="menu-header">
+            <h3>🎮 游戏菜单</h3>
+            <button class="close-btn" id="close-menu">×</button>
+        </div>
+        <div class="menu-content">
+            <button class="menu-item" id="save-game-btn">
+                <span class="menu-icon">💾</span>
+                <span class="menu-text">保存游戏</span>
+            </button>
+            <button class="menu-item" id="load-game-btn">
+                <span class="menu-icon">📁</span>
+                <span class="menu-text">加载游戏</span>
+            </button>
+            <button class="menu-item" id="recipe-book-btn">
+                <span class="menu-icon">📖</span>
+                <span class="menu-text">配方大全</span>
+            </button>
+            <button class="menu-item" id="test-mode-btn">
+                <span class="menu-icon">🧪</span>
+                <span class="menu-text">测试模式</span>
+            </button>
+            <button class="menu-item" id="test-window-btn">
+                <span class="menu-icon">🔬</span>
+                <span class="menu-text">测试窗口</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 商店面板 -->
+    <div class="shop-panel" id="shop-panel" style="display: none;">
+        <!-- 商店内容将通过JavaScript动态生成 -->
+    </div>
+
+    <!-- 配方面板 -->
+    <div class="recipe-panel" id="recipe-panel" style="display: none;">
+        <!-- 配方内容将通过JavaScript动态生成 -->
+    </div>
+
+    <!-- 测试模式面板 -->
+    <div class="test-panel" id="test-panel" style="display: none;">
+        <!-- 测试内容将通过JavaScript动态生成 -->
+    </div>
+
+    <!-- 篮子选择面板 -->
+    <div class="basket-panel" id="basket-panel" style="display: none;">
+        <!-- 篮子内容将通过JavaScript动态生成 -->
+    </div>
+
+    <!-- 特殊顾客档案弹窗 -->
+    <div class="customer-profile-modal" id="customer-profile-modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeCustomerProfiles()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🌵 特殊顾客档案</h3>
+                <button class="close-btn" onclick="closeCustomerProfiles()">×</button>
+            </div>
+            <div class="modal-body" id="customer-profile-list">
+                <!-- 顾客档案列表将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 猫猫档案弹窗 -->
+    <div class="customer-profile-modal" id="cat-profile-modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeCatProfiles()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🐱 猫猫档案</h3>
+                <button class="close-btn" onclick="closeCatProfiles()">×</button>
+            </div>
+            <div class="modal-body" id="cat-profile-list">
+                <!-- 猫猫档案列表将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 测试页面弹窗 -->
+    <div class="test-panel-modal" id="test-panel-modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeTestPanel()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🧪 测试页面</h3>
+                <button class="close-btn" onclick="closeTestPanel()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="test-section">
+                    <h4>🎮 游戏数据增加</h4>
+                    <div class="test-buttons-grid">
+                        <button class="test-action-btn" onclick="testAddCustomers()">
+                            增加30顾客
+                        </button>
+                        <button class="test-action-btn" onclick="testAddAllSeeds()">
+                            增加全部种子
+                        </button>
+                        <button class="test-action-btn" onclick="testAddAllMaterials()">
+                            增加全部原料
+                        </button>
+                        <button class="test-action-btn" onclick="testAddAllToppings()">
+                            增加全部小料
+                        </button>
+                        <button class="test-action-btn" onclick="testUnlockAllRecipes()">
+                            解锁全部配方
+                        </button>
+                        <button class="test-action-btn" onclick="testAddAllTeas()">
+                            增加全部茶饮
+                        </button>
+                        <button class="test-action-btn" onclick="testSpawnCustomer()">
+                            立刻刷新顾客
+                        </button>
+                        <button class="test-action-btn" onclick="testAddDay()">
+                            📅 增加一天
+                        </button>
+                    </div>
+                </div>
+                <div class="test-section">
+                    <h4>🐱 猫咪系统测试</h4>
+                    <div class="test-buttons-grid">
+                        <button class="test-action-btn" onclick="testSpawnCat()">
+                            🐱 立刻刷新猫猫
+                        </button>
+                        <button class="test-action-btn" onclick="testAddFish()">
+                            🐟 添加小鱼干x10
+                        </button>
+                        <button class="test-action-btn" onclick="testMakeFishDish()">
+                            🍲 制作白水煮鱼
+                        </button>
+                        <button class="test-action-btn" onclick="testMaxCatIntimacy()">
+                            💕 所有猫咪满亲密度
+                        </button>
+                    </div>
+                    <h5 style="color: #E91E63; margin: 15px 0 10px 0;">🎁 礼物系统测试</h5>
+                    <div class="test-buttons-grid">
+                        <button class="test-action-btn" onclick="testCatIntimacy500()">
+                            🎁 亲密度500测试
+                        </button>
+                        <button class="test-action-btn" onclick="testCatIntimacy1500()">
+                            🎁 亲密度1500测试
+                        </button>
+                        <button class="test-action-btn" onclick="testCatIntimacy3000()">
+                            🎁 亲密度3000测试
+                        </button>
+                        <button class="test-action-btn" onclick="testCatIntimacy5000()">
+                            🎁 亲密度5000测试
+                        </button>
+                    </div>
+                </div>
+                <div class="test-section">
+                    <h4>🗑️ 游戏数据清空</h4>
+                    <div class="test-buttons-grid">
+                        <button class="test-action-btn danger" onclick="testClearCustomers()">
+                            清空顾客数
+                        </button>
+                        <button class="test-action-btn danger" onclick="testClearSeeds()">
+                            清空种子
+                        </button>
+                        <button class="test-action-btn danger" onclick="testClearMaterials()">
+                            清空原料
+                        </button>
+                        <button class="test-action-btn danger" onclick="testClearToppings()">
+                            清空小料
+                        </button>
+                        <button class="test-action-btn danger" onclick="testClearTeas()">
+                            清空茶饮
+                        </button>
+                        <button class="test-action-btn danger" onclick="testResetRecipes()">
+                            重置配方
+                        </button>
+                        <button class="test-action-btn danger" onclick="testClearCoins()">
+                            清空金币
+                        </button>
+                        <button class="test-action-btn danger" onclick="testResetDay()">
+                            重置天数
+                        </button>
+                        <button class="test-action-btn danger" onclick="testResetAllSaves()">
+                            重置全部存档
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- 关闭游戏容器 -->
+
+    <script src="script.js"></script>
+</body>
+</html>
